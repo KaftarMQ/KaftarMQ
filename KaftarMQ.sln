@@ -1,7 +1,5 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KaftarMQ", "KaftarMQ\KaftarMQ.csproj", "{1D1B5EFE-5EAC-40DB-A365-81F53094F8ED}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Producer", "Producer\Producer.csproj", "{EA73CCE2-D2E4-4032-99F0-FC01BB954A99}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Consumer", "Consumer\Consumer.csproj", "{C49AD826-D50F-44F5-A144-C50BFBC08E37}"
@@ -20,10 +18,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{1D1B5EFE-5EAC-40DB-A365-81F53094F8ED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1D1B5EFE-5EAC-40DB-A365-81F53094F8ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1D1B5EFE-5EAC-40DB-A365-81F53094F8ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1D1B5EFE-5EAC-40DB-A365-81F53094F8ED}.Release|Any CPU.Build.0 = Release|Any CPU
 		{EA73CCE2-D2E4-4032-99F0-FC01BB954A99}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{EA73CCE2-D2E4-4032-99F0-FC01BB954A99}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EA73CCE2-D2E4-4032-99F0-FC01BB954A99}.Release|Any CPU.ActiveCfg = Release|Any CPU
