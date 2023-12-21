@@ -1,0 +1,52 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KaftarMQ", "KaftarMQ\KaftarMQ.csproj", "{1D1B5EFE-5EAC-40DB-A365-81F53094F8ED}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Producer", "Producer\Producer.csproj", "{EA73CCE2-D2E4-4032-99F0-FC01BB954A99}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Consumer", "Consumer\Consumer.csproj", "{C49AD826-D50F-44F5-A144-C50BFBC08E37}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Router", "Router\Router.csproj", "{08D7D8A9-363A-44CC-ACD2-E576744003F3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Broker", "Broker\Broker.csproj", "{700457DE-F185-4612-91C3-DA42736D740A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PushNotification", "PushNotification\PushNotification.csproj", "{35EE25A1-464F-4984-9BC3-3BF1BD2742C3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Syncer", "Syncer\Syncer.csproj", "{4809E2E6-676A-42A1-9A4E-2611DFDC1890}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1D1B5EFE-5EAC-40DB-A365-81F53094F8ED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1D1B5EFE-5EAC-40DB-A365-81F53094F8ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1D1B5EFE-5EAC-40DB-A365-81F53094F8ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1D1B5EFE-5EAC-40DB-A365-81F53094F8ED}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EA73CCE2-D2E4-4032-99F0-FC01BB954A99}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EA73CCE2-D2E4-4032-99F0-FC01BB954A99}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EA73CCE2-D2E4-4032-99F0-FC01BB954A99}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EA73CCE2-D2E4-4032-99F0-FC01BB954A99}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C49AD826-D50F-44F5-A144-C50BFBC08E37}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C49AD826-D50F-44F5-A144-C50BFBC08E37}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C49AD826-D50F-44F5-A144-C50BFBC08E37}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C49AD826-D50F-44F5-A144-C50BFBC08E37}.Release|Any CPU.Build.0 = Release|Any CPU
+		{08D7D8A9-363A-44CC-ACD2-E576744003F3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{08D7D8A9-363A-44CC-ACD2-E576744003F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{08D7D8A9-363A-44CC-ACD2-E576744003F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{08D7D8A9-363A-44CC-ACD2-E576744003F3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{700457DE-F185-4612-91C3-DA42736D740A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{700457DE-F185-4612-91C3-DA42736D740A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{700457DE-F185-4612-91C3-DA42736D740A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{700457DE-F185-4612-91C3-DA42736D740A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{35EE25A1-464F-4984-9BC3-3BF1BD2742C3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{35EE25A1-464F-4984-9BC3-3BF1BD2742C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{35EE25A1-464F-4984-9BC3-3BF1BD2742C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{35EE25A1-464F-4984-9BC3-3BF1BD2742C3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4809E2E6-676A-42A1-9A4E-2611DFDC1890}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4809E2E6-676A-42A1-9A4E-2611DFDC1890}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4809E2E6-676A-42A1-9A4E-2611DFDC1890}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4809E2E6-676A-42A1-9A4E-2611DFDC1890}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

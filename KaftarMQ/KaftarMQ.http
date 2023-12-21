@@ -1,0 +1,6 @@
+@KaftarMQ_HostAddress = http://localhost:5121
+
+GET {{KaftarMQ_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
