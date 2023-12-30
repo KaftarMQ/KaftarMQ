@@ -1,3 +1,4 @@
+using System.Text;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Broker;
@@ -13,9 +14,10 @@ public class MessageController : ControllerBase
         _broker = broker;
     }
 
-    [HttpPost]
-    public IActionResult Push(string key, byte[] value)
+    [HttpPost("push")]
+    public IActionResult Push(string key, string value)
     {
+        Console.WriteLine($"Pushing message with key: {key}, value: {value}");
         if (string.IsNullOrEmpty(key))
         {
             key = "default";
@@ -31,7 +33,7 @@ public class MessageController : ControllerBase
         return Ok(_broker.PullMessage(key));
     }
 
-    [HttpPost]
+    [HttpPost("subscribe")]
     public IActionResult Subscribe(string key, string clientAddress)
     {
         if (string.IsNullOrEmpty(key))

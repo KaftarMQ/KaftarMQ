@@ -1,8 +1,13 @@
+using Broker;
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddSingleton<IBroker, Broker.Broker>();
+builder.Services.AddSingleton<IMessageStore, MemoryMessageStore>();
+builder.Services.AddSingleton<IClientNotifier, ClientNotifier>();
 
 var app = builder.Build();
 
