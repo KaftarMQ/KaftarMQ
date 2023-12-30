@@ -1,3 +1,3 @@
 namespace Broker;
 
-public record Message(string Key, byte[] Value);
+public record Message(string Key, string Value);

@@ -4,7 +4,7 @@ public class Broker : IBroker
 {
     private readonly IMessageStore _messageStore;
     private readonly IClientNotifier _clientNotifier;
-    private readonly Dictionary<string, HashSet<string>> _subscribers = new();
+    private readonly Dictionary<string, HashSet<Subscriber>> _subscribers = new();
     private readonly Dictionary<string, Queue<Message>> _notSeenMessages = new();
 
     public Broker(IMessageStore messageStore, IClientNotifier clientNotifier)
@@ -13,7 +13,7 @@ public class Broker : IBroker
         _clientNotifier = clientNotifier;
     }
 
-    public void PushMessage(string key, byte[] value)
+    public void PushMessage(string key, string value)
     {
         if (string.IsNullOrEmpty(key))
         {
@@ -29,6 +29,10 @@ public class Broker : IBroker
         }
 
         _notSeenMessages[key].Enqueue(message);
+        if (!_subscribers.ContainsKey(key))
+        {
+            _subscribers[key] = new HashSet<Subscriber>();
+        }
 
         NotifySubscribers(key);
     }
@@ -47,7 +51,7 @@ public class Broker : IBroker
             var keySubscribers = _subscribers[key];
             foreach (var subscriber in keySubscribers)
             {
-                _clientNotifier.NotifyClient(subscriber, message);
+                _clientNotifier.NotifyClient(subscriber.Address, message);
             }
         }
     }
@@ -69,6 +73,12 @@ public class Broker : IBroker
             key = "default";
         }
 
-        _subscribers[key].Add(clientAddress);
+        if (!_subscribers.ContainsKey(key))
+        {
+            _subscribers[key] = new HashSet<Subscriber>();
+        }
+        _subscribers[key].Add(new Subscriber(clientAddress));
     }
 }
+
+public record Subscriber(string Address);
