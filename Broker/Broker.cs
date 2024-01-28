@@ -78,6 +78,8 @@ public class Broker : IBroker
             _subscribers[key] = new HashSet<Subscriber>();
         }
         _subscribers[key].Add(new Subscriber(clientAddress));
+        
+        NotifySubscribers(key);
     }
 }
 
