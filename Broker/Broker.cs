@@ -1,16 +1,21 @@
+using Broker.Storage;
+using Pathoschild.Http.Client;
+
 namespace Broker;
 
 public class Broker : IBroker
 {
     private readonly IMessageStore _messageStore;
     private readonly IClientNotifier _clientNotifier;
+    private readonly ReplicationMetadata _replicationMetadata;
     private readonly Dictionary<string, HashSet<Subscriber>> _subscribers = new();
     private readonly Dictionary<string, Queue<Message>> _notSeenMessages = new();
 
-    public Broker(IMessageStore messageStore, IClientNotifier clientNotifier)
+    public Broker(IMessageStore messageStore, IClientNotifier clientNotifier, ReplicationMetadata replicationMetadata)
     {
         _messageStore = messageStore;
         _clientNotifier = clientNotifier;
+        _replicationMetadata = replicationMetadata;
     }
 
     public void PushMessage(string key, string value, Guid id)
@@ -43,6 +48,10 @@ public class Broker : IBroker
 
     private void NotifySubscribers(string key)
     {
+        if (!_replicationMetadata.IsMaster(key))
+        {
+            return;
+        }
         var notSeenMessages = _notSeenMessages[key];
         lock (notSeenMessages)
         {
@@ -53,13 +62,20 @@ public class Broker : IBroker
 
             while (notSeenMessages.Count > 0)
             {
-                var message = _notSeenMessages[key].Dequeue();
+                var message = notSeenMessages.Dequeue();
 
-                var keySubscribers = _subscribers[key];
-                foreach (var subscriber in keySubscribers)
-                {
-                    _clientNotifier.NotifyClient(subscriber.Address, message);
-                }
+                var keySubscribers = _subscribers[key].ToArray();
+                
+                var randomSubscriber = keySubscribers[new Random().Next(keySubscribers.Length)];
+                
+                _clientNotifier.NotifyClient(randomSubscriber.Address, message)
+                    .GetAwaiter()
+                    .GetResult();
+
+                new FluentClient(ADDRESS.RouterAddress)
+                    .PostAsync("replication/updatePointer")
+                    .WithArgument("key", message.Key)
+                    .WithArgument("lastConsumedMessageId", message.Id).GetAwaiter().GetResult();
             }
         }
     }

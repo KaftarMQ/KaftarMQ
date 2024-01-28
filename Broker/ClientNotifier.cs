@@ -4,7 +4,7 @@ namespace Broker;
 
 public class ClientNotifier : IClientNotifier
 {
-    public async void NotifyClient(string clientAddress, Message message)
+    public async Task NotifyClient(string clientAddress, Message message)
     {
         await new FluentClient(clientAddress)
             .PostAsync("message/push")

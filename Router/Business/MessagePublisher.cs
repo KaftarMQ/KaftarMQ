@@ -61,7 +61,7 @@ public class MessagePublisher
 
     public async Task UpdatePointer(string key, Guid lastConsumedMessageId)
     {
-        var brokers = _routingTableStorage.GetBrokers(key);
+        var brokers = _routingTableStorage.GetSlaves(key);
 
         foreach (var broker in brokers)
         {
