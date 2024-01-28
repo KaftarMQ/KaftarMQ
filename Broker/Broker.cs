@@ -13,14 +13,14 @@ public class Broker : IBroker
         _clientNotifier = clientNotifier;
     }
 
-    public void PushMessage(string key, string value)
+    public void PushMessage(string key, string value, Guid id)
     {
         if (string.IsNullOrEmpty(key))
         {
             key = "default";
         }
 
-        var message = new Message(key, value);
+        var message = new Message(key, value, id);
         _messageStore.AddMessage(message);
 
         if (!_notSeenMessages.ContainsKey(key))
@@ -28,7 +28,11 @@ public class Broker : IBroker
             _notSeenMessages[key] = new Queue<Message>();
         }
 
-        _notSeenMessages[key].Enqueue(message);
+        var notSeenMessage = _notSeenMessages[key];
+        lock (notSeenMessage)
+        {
+            notSeenMessage.Enqueue(message);
+        }
         if (!_subscribers.ContainsKey(key))
         {
             _subscribers[key] = new HashSet<Subscriber>();
@@ -40,18 +44,22 @@ public class Broker : IBroker
     private void NotifySubscribers(string key)
     {
         var notSeenMessages = _notSeenMessages[key];
-        if (notSeenMessages.Count == 0 || (_subscribers.ContainsKey(key) && _subscribers[key].Count == 0))
+        lock (notSeenMessages)
         {
-            return;
-        }
-
-        while (notSeenMessages.Count > 0)
-        {
-            var message = _notSeenMessages[key].Dequeue();
-            var keySubscribers = _subscribers[key];
-            foreach (var subscriber in keySubscribers)
+            if (notSeenMessages.Count == 0 || (_subscribers.ContainsKey(key) && _subscribers[key].Count == 0))
             {
-                _clientNotifier.NotifyClient(subscriber.Address, message);
+                return;
+            }
+
+            while (notSeenMessages.Count > 0)
+            {
+                var message = _notSeenMessages[key].Dequeue();
+
+                var keySubscribers = _subscribers[key];
+                foreach (var subscriber in keySubscribers)
+                {
+                    _clientNotifier.NotifyClient(subscriber.Address, message);
+                }
             }
         }
     }
@@ -63,7 +71,14 @@ public class Broker : IBroker
             key = "default";
         }
 
-        return !_notSeenMessages.ContainsKey(key) ? null : _notSeenMessages[key].Dequeue();
+        if (!_notSeenMessages.ContainsKey(key))
+            return null;
+
+        var notSeenMessage = _notSeenMessages[key];
+        lock (notSeenMessage)
+        {
+            return notSeenMessage.Dequeue();
+        }
     }
 
     public void AddSubscriber(string key, string clientAddress)
@@ -77,9 +92,21 @@ public class Broker : IBroker
         {
             _subscribers[key] = new HashSet<Subscriber>();
         }
+
         _subscribers[key].Add(new Subscriber(clientAddress));
-        
+
         NotifySubscribers(key);
+    }
+
+    public void UpdatePointer(string key, Guid lastConsumedMessageId)
+    {
+        var notSeenMessage = _notSeenMessages[key];
+        lock (notSeenMessage)
+        {
+            while (notSeenMessage.Dequeue().Id != lastConsumedMessageId)
+            {
+            }   
+        }
     }
 }
 

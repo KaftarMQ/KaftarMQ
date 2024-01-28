@@ -1,4 +1,3 @@
-using System.Text;
 using Broker.Storage;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,10 +8,12 @@ namespace Broker;
 public class ReplicationController : ControllerBase
 {
     private readonly ReplicationMetadata _replicationMetadata;
+    private readonly IBroker _broker;
 
-    public ReplicationController(ReplicationMetadata replicationMetadata)
+    public ReplicationController(ReplicationMetadata replicationMetadata, IBroker broker)
     {
         _replicationMetadata = replicationMetadata ?? throw new ArgumentNullException(nameof(replicationMetadata));
+        _broker = broker;
     }
 
     [HttpPost("SetMaster")]
@@ -32,8 +33,9 @@ public class ReplicationController : ControllerBase
     }
 
     [HttpPost("UpdatePointer")]
-    public IActionResult UpdatePointer(string key, string lastConsumedMessageId)
+    public IActionResult UpdatePointer(string key, Guid lastConsumedMessageId)
     {
+        _broker.UpdatePointer(key, lastConsumedMessageId);
         return Ok();
     }
 }

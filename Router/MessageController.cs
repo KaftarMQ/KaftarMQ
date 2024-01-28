@@ -1,7 +1,7 @@
 using System.Text;
-using Broker.Business;
 using Broker.Classes;
 using Microsoft.AspNetCore.Mvc;
+using Router.Business;
 
 namespace Broker;
 
@@ -49,12 +49,10 @@ public class MessageController : ControllerBase
         return Ok();
     }
     
-    [HttpPost("subscribe")]
-    public IActionResult UpdatePointer(string key, string lastConsumedMessageId)
+    [HttpPost("UpdatePointer")]
+    public IActionResult UpdatePointer(string key, Guid lastConsumedMessageId)
     {
-        Console.WriteLine($"Pointer of key {key} updated to : {lastConsumedMessageId}");
         _messagePublisher.UpdatePointer(key, lastConsumedMessageId).GetAwaiter().GetResult();
         return Ok();
     }
-
 }

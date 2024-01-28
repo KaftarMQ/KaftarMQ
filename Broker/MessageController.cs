@@ -15,7 +15,7 @@ public class MessageController : ControllerBase
     }
 
     [HttpPost("push")]
-    public IActionResult Push(string key, string value)
+    public IActionResult Push(string key, string value, Guid id)
     {
         Console.WriteLine($"Pushing message with key: {key}, value: {value}");
         if (string.IsNullOrEmpty(key))
@@ -23,7 +23,7 @@ public class MessageController : ControllerBase
             key = "default";
         }
 
-        _broker.PushMessage(key, value);
+        _broker.PushMessage(key, value, id);
         return Ok();
     }
 

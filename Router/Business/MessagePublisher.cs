@@ -1,6 +1,7 @@
-﻿using Pathoschild.Http.Client;
+﻿using Broker;
+using Pathoschild.Http.Client;
 
-namespace Broker.Business;
+namespace Router.Business;
 
 public class MessagePublisher
 {
@@ -15,9 +16,10 @@ public class MessagePublisher
     {
         var brokerUrls = _routingTableStorage.GetBrokers(key);
 
+        var guid = Guid.NewGuid();
         foreach (var brokerUrl in brokerUrls)
         {
-            await NotifyClient(brokerUrl, key, value);
+            await NotifyClient(brokerUrl, key, value, guid);
         }
     }
     
@@ -31,12 +33,13 @@ public class MessagePublisher
     }
 
     
-    private static async Task NotifyClient(string clientAddress, string key, string value)
+    private static async Task NotifyClient(string clientAddress, string key, string value, Guid id)
     {
         await new FluentClient(clientAddress)
             .PostAsync("message/push")
             .WithArgument("key", key)
-            .WithArgument("value", value);
+            .WithArgument("value", value)
+            .WithArgument("id", id);
         
         Console.WriteLine("broker Notified");
     }
@@ -56,14 +59,14 @@ public class MessagePublisher
         Console.WriteLine("broker Notified");
     }
 
-    public async Task UpdatePointer(string key, string lastConsumedMessageId)
+    public async Task UpdatePointer(string key, Guid lastConsumedMessageId)
     {
         var brokers = _routingTableStorage.GetBrokers(key);
 
         foreach (var broker in brokers)
         {
             await new FluentClient(broker)
-                .PostAsync("message/UpdatePointer")
+                .PostAsync("replication/updatePointer")
                 .WithArgument("key", key)
                 .WithArgument("lastConsumedMessageId", lastConsumedMessageId);    
         }
