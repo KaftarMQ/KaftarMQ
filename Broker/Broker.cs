@@ -4,8 +4,8 @@ public class Broker : IBroker
 {
     private readonly IMessageStore _messageStore;
     private readonly IClientNotifier _clientNotifier;
-    private readonly Dictionary<string, HashSet<Subscriber>> _subscribers = new();
-    private readonly Dictionary<string, Queue<Message>> _notSeenMessages = new();
+    private readonly Dictionary<Guid, HashSet<Subscriber>> _subscribers = new();
+    private readonly Dictionary<Guid, Queue<Message>> _notSeenMessages = new();
 
     public Broker(IMessageStore messageStore, IClientNotifier clientNotifier)
     {
@@ -13,13 +13,8 @@ public class Broker : IBroker
         _clientNotifier = clientNotifier;
     }
 
-    public void PushMessage(string key, string value)
+    public void PushMessage(Guid key, string value)
     {
-        if (string.IsNullOrEmpty(key))
-        {
-            key = "default";
-        }
-
         var message = new Message(key, value);
         _messageStore.AddMessage(message);
 
@@ -37,7 +32,7 @@ public class Broker : IBroker
         NotifySubscribers(key);
     }
 
-    private void NotifySubscribers(string key)
+    private void NotifySubscribers(Guid key)
     {
         var notSeenMessages = _notSeenMessages[key];
         if (notSeenMessages.Count == 0 || (_subscribers.ContainsKey(key) && _subscribers[key].Count == 0))
@@ -51,34 +46,23 @@ public class Broker : IBroker
             var keySubscribers = _subscribers[key];
             foreach (var subscriber in keySubscribers)
             {
-                _clientNotifier.NotifyClient(subscriber.Address, message);
+                _clientNotifier.NotifyClient(subscriber.ClientAddress, message);
             }
         }
     }
 
-    public Message? PullMessage(string key)
+    public Message? PullMessage(Guid key)
     {
-        if (string.IsNullOrEmpty(key))
-        {
-            key = "default";
-        }
-
         return !_notSeenMessages.ContainsKey(key) ? null : _notSeenMessages[key].Dequeue();
     }
 
-    public void AddSubscriber(string key, string clientAddress)
+    public void AddSubscriber(Guid key, string clientAddress)
     {
-        if (string.IsNullOrEmpty(key))
-        {
-            key = "default";
-        }
-
         if (!_subscribers.ContainsKey(key))
         {
             _subscribers[key] = new HashSet<Subscriber>();
         }
-        _subscribers[key].Add(new Subscriber(clientAddress));
+
+        _subscribers[key].Add(new Subscriber(Guid.NewGuid(), clientAddress, key));
     }
 }
-
-public record Subscriber(string Address);

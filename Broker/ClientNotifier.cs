@@ -8,7 +8,7 @@ public class ClientNotifier : IClientNotifier
     {
         await new FluentClient(clientAddress)
             .PostAsync("message/push")
-            .WithArgument("key", message.Key)
+            .WithArgument("key", message.Id)
             .WithArgument("value", message.Value);
         
         Console.WriteLine("Client Notified");

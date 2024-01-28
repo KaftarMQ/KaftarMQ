@@ -2,7 +2,7 @@ namespace Broker;
 
 public interface IBroker
 {
-    void PushMessage(string key, string value);
-    Message? PullMessage(string key);
-    void AddSubscriber(string key, string clientAddress);
+    void PushMessage(Guid key, string value);
+    Message? PullMessage(Guid key);
+    void AddSubscriber(Guid key, string clientAddress);
 }
