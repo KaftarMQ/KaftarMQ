@@ -14,9 +14,9 @@ public class BrokerController
     }
 
     [HttpPost("push")]
-    public async Task<IActionResult> PushMessage(Guid key, string value)
+    public async Task<IActionResult> PushMessage(string key, string value, Guid id)
     {
-        var message = new Message(key, value);
+        var message = new Message(key, value, id);
         _context.Messages.Add(message);
         await _context.SaveChangesAsync();
         return new OkResult();
