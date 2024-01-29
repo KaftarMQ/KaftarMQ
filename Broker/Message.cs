@@ -1,3 +1,3 @@
 namespace Broker;
 
-public record Message(Guid Id, string Value);
+public record Message(string Key, string Value, Guid Id);

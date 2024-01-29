@@ -15,23 +15,32 @@ public class MessageController : ControllerBase
     }
 
     [HttpPost("push")]
-    public IActionResult Push(Guid key, string value)
+    public IActionResult Push(string key, string value, Guid id)
     {
         Console.WriteLine($"Pushing message with key: {key}, value: {value}");
+        if (string.IsNullOrEmpty(key))
+        {
+            key = "default";
+        }
 
-        _broker.PushMessage(key, value);
+        _broker.PushMessage(key, value, id);
         return Ok();
     }
 
     [HttpGet]
-    public ActionResult<Message?> Pull(Guid key)
+    public ActionResult<Message?> Pull(string key)
     {
         return Ok(_broker.PullMessage(key));
     }
 
     [HttpPost("subscribe")]
-    public IActionResult Subscribe(Guid key, string clientAddress)
+    public IActionResult Subscribe(string key, string clientAddress)
     {
+        if (string.IsNullOrEmpty(key))
+        {
+            key = "default";
+        }
+
         _broker.AddSubscriber(key, clientAddress);
         return Ok();
     }

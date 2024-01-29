@@ -1,4 +1,5 @@
 using Broker;
+using Broker.Storage;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,6 +9,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddSingleton<IBroker, Broker.Broker>();
 builder.Services.AddSingleton<IMessageStore, MemoryMessageStore>();
 builder.Services.AddSingleton<IClientNotifier, ClientNotifier>();
+builder.Services.AddSingleton<ReplicationMetadata>();
 
 var app = builder.Build();
 
