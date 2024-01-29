@@ -25,23 +25,21 @@ public class BrokerController
     [HttpGet("pull")]
     public async Task<IActionResult> PullMessage(string key)
     {
-        // Ensure that the query is built as IQueryable
         IQueryable<Message> query = _context.Messages;
         var message = await query
-            .Where(m => m.Id.ToString() == key) // This now explicitly uses IQueryable's Where
-            .OrderBy(m => m.Id) // Again, using IQueryable's OrderBy
-            .FirstOrDefaultAsync(); // Asynchronously find the first or default message
+            .Where(m => m.Id.ToString() == key)
+            .OrderBy(m => m.Id)
+            .FirstOrDefaultAsync();
 
         if (message != null)
         {
             _context.Messages.Remove(message);
             await _context.SaveChangesAsync();
-            return Ok(message); // Corrected: use Ok method to return an OkObjectResult with 'message'
+            return new OkObjectResult(message);
         }
 
-        return NotFound("No message found for the given key.");
+        return new NotFoundResult();
     }
-
 
 
     [HttpPost("subscribe")]
@@ -49,13 +47,11 @@ public class BrokerController
     {
         var subscriber = new Subscriber
         (
-            Guid.NewGuid(),
-            clientAddress,
-            Guid.Parse(key)
+            clientAddress
         );
 
         _context.Subscribers.Add(subscriber);
         await _context.SaveChangesAsync();
-        return Ok($"Subscribed to key: {key}");
+        return new OkObjectResult($"Subscribed to key: {key}");
     }
 }
