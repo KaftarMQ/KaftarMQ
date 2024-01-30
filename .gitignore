@@ -1,0 +1,281 @@
+# Default .NET gitignore content
+
+# User-specific files
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.userprefs
+*.dbmdl
+*.jfm
+*.der
+*.pfx
+*.publishsettings
+
+# User-specific files (Rider)
+.idea/
+*.sln.iml
+
+# Build results
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+[Aa][Rr][Mm]/
+[Aa][Rr][Mm]64/
+bld/
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Ll]ogs/
+[Tt]est[Rr]esult*/
+
+# Visual Studio 2015/2017/2019/2022 cache/options directory
+.vs/
+
+# Rider project settings
+.idea/
+
+# Visual Studio Code settings
+.vscode/
+
+# Build results of an MSBuild project
+[Bb]in/
+[Oo]bj/
+
+# MSTest test Results
+[Tt]est[Rr]esult*/
+[Bb]uild[Ll]og.*
+
+# NUNIT
+*.VisualState.xml
+TestResult.xml
+nunit-*.xml
+
+# Build Results of an MSBuild Project
+[Bb]in/
+[Oo]bj/
+[Tt]est[Rr]esults/
+
+# .NET Core
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# StyleCop
+StyleCopReport.xml
+
+# Files built by Visual Studio
+*_i.c
+*_p.c
+*_h.h
+*.ilk
+*.meta
+*.obj
+*.iobj
+*.pch
+*.pdb
+*.ipdb
+*.pgc
+*.pgd
+*.rsp
+*.sbr
+*.tlb
+*.tli
+*.tlh
+*.tmp
+*.tmp_proj
+*.log
+*.vspscc
+*.vssscc
+*.user
+*.csproj.user
+*.vbproj.user
+*.sln.docstates
+
+# ReSharper
+**/_ReSharper*/
+**/*.[Rr]e[Ss]harper
+*.DotSettings.user
+
+# TeamCity
+_TeamCity*
+
+# DotCover is a Code Coverage Tool
+*.dotCover
+
+# AxoCover
+.axoCover/*
+!.axoCover/settings.json
+
+# Coverlet
+coverage*.json
+coverage*.xml
+coverage*.info
+
+# Visual Studio code coverage results
+*.coverage
+*.coveragexml
+
+# NCrunch
+_NCrunch_*
+.*crunch*.local.xml
+nCrunchTemp_*
+
+# MightyMoose
+*.mm.*
+AutoTest.Net/
+
+# BizTalk
+*.btm
+*.xsd
+
+# OpenCover UI - Code coverage tool
+OpenCover/
+
+# Cake - Uncomment if you are using it
+# tools/**
+# !tools/packages.config
+
+# Tabs Studio
+*.tss
+
+# Telerik's JustMock configuration file
+*.jmconfig
+
+# BizTalk Server
+*.btp.cs
+*.btm.cs
+*.odx.cs
+*.xsd.cs
+
+# Web workbench (sass)
+.sass-cache/
+
+# Installshield output folder
+[Ee]xpress/
+
+# DocProject - documentation project
+DocProject/buildhelp/
+DocProject/Help/*.
+
+# ...continuing from previous content
+
+# Node modules for ASP.NET Core projects
+**/node_modules/
+
+# Visual Studio 2022 cache/options directory
+.vs/
+
+# Rider specific
+.idea/
+
+# User-specific stuff
+*.rsuser
+*_ReSharper*/
+*.[Rr]e[Ss]harper
+*.user
+
+# macOS specific
+.DS_Store
+
+# MonoDevelop specific
+*.userprefs
+
+# Windows image file caches
+Thumbs.db
+
+# Folder config file
+Desktop.ini
+
+# ReSharper
+_ReSharper*/
+
+# User-specific files
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# MSTest test Results
+[Tt]est[Rr]esult*/
+
+# NUNIT
+*.VisualState.xml
+TestResult.xml
+
+# Build Results of an MSBuild Project
+[Bb]in/
+[Oo]bj/
+[Tt]est[Rr]esults/
+
+# .NET Core
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# ASP.NET Scaffolding
+[Ss]caffoldReadMe.txt
+
+# StyleCop
+StyleCopReport.xml
+
+# Files built by Visual Studio
+*_i.c
+*_p.c
+*_h.h
+*.ilk
+*.meta
+*.obj
+*.iobj
+*.pch
+*.pdb
+*.ipdb
+*.pgc
+*.pgd
+*.rsp
+*.sbr
+*.tlb
+*.tli
+*.tlh
+*.tmp
+*.tmp_proj
+*.log
+*.vspscc
+*.vssscc
+*.user
+*.csproj.user
+*.vbproj.user
+*.sln.docstates
+
+# JetBrains Rider
+.idea/
+*.sln.iml
+
+# .NET Core SDK
+sdk-*.json
+
+# ASP.NET Core
+**/Properties/launchSettings.json
+
+# JetBrains Rider
+.idea/
+*.sln.iml
+
+# Docker Ignore - Customize as per your Dockerfile
+[Dd]ockerfile*
+.dockerignore
+docker-compose*
+
+# Entity Framework Core
+**/Migrations/*.Designer.cs
+
+# Secret appsettings for development
+**/appsettings.Development.json
+**/secrets.json
+
+# Visual Studio Code
+.vscode/
+
+# Output of the dotnet-script tool
+.scriptcs/
