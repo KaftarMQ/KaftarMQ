@@ -1,23 +1,27 @@
-﻿FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
-USER $APP_UID
+﻿# Base image for runtime
+FROM mcr.microsoft.com/dotnet/aspnet:7.0 AS base
 WORKDIR /app
 EXPOSE 8080
 EXPOSE 8081
 
-FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+# SDK image for building the app
+FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["PushNotification/PushNotification.csproj", "PushNotification/"]
-RUN dotnet restore "PushNotification/PushNotification.csproj"
+# Copy the csproj file from the current directory where Dockerfile is located
+COPY ["PushNotification.csproj", "./"]
+RUN dotnet restore "PushNotification.csproj"
+# Copy everything else from the current directory
 COPY . .
-WORKDIR "/src/PushNotification"
+WORKDIR "/src"
 RUN dotnet build "PushNotification.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 FROM build AS publish
-ARG BUILD_CONFIGURATION=Release
 RUN dotnet publish "PushNotification.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
+# Final base image
 FROM base AS final
 WORKDIR /app
+# Copy from the publish stage to the final image
 COPY --from=publish /app/publish .
 ENTRYPOINT ["dotnet", "PushNotification.dll"]

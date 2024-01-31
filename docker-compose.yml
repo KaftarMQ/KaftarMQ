@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  broker:
+    image: kaftarmq/broker:local  # Assumes local image is available on all nodes
+    ports:
+      - "8080:8080"
+    deploy:
+      replicas: 2
+      update_config:
+        parallelism: 2
+        delay: 10s
+      restart_policy:
+        condition: on-failure
+
+  router:
+    image: kaftarmq/router:local  # Assumes local image is available on all nodes
+    ports:
+      - "8081:8081"
+    deploy:
+      replicas: 2
+      update_config:
+        parallelism: 2
+        delay: 10s
+      restart_policy:
+        condition: on-failure
