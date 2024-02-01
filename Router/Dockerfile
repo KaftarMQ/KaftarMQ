@@ -1,17 +1,17 @@
 ﻿# Use the official image as a parent image
 FROM mcr.microsoft.com/dotnet/aspnet:7.0 AS base
 WORKDIR /app
-EXPOSE 8081
+EXPOSE 30000
 
 # Use the SDK image to build the project files
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 WORKDIR /src
-COPY ["Router/Router.csproj", "Router/"]
-RUN dotnet restore "Router/Router.csproj"
+COPY ["./Router.csproj", "./"]
+RUN dotnet restore "./Router.csproj"
 
 # Copy the source code and build the application
 COPY . .
-WORKDIR "/src/Router"
+WORKDIR "/src/"
 RUN dotnet build "Router.csproj" -c Release -o /app/build
 
 FROM build AS publish

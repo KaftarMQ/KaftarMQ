@@ -1,0 +1,3 @@
+docker stack deploy -c docker-compose.yml my_stack
+PS C:\Users\Amir\RiderProjects\KaftarMQ> docker build -t my-nginx-image:latest . 
+PS C:\Users\Amir\RiderProjects\KaftarMQ\Router> docker build -t kaftarmq/router:local .

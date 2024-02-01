@@ -2,9 +2,9 @@ version: '3.8'
 
 services:
   broker:
-    image: kaftarmq/broker:local  # Assumes local image is available on all nodes
+    image: kaftarmq/broker:local
     ports:
-      - "8080:8080"
+      - "8080:20000"
     deploy:
       replicas: 2
       update_config:
@@ -12,11 +12,13 @@ services:
         delay: 10s
       restart_policy:
         condition: on-failure
+    networks:
+      - net
 
   router:
-    image: kaftarmq/router:local  # Assumes local image is available on all nodes
+    image: kaftarmq/router:local
     ports:
-      - "8081:8081"
+      - "8081:30000"
     deploy:
       replicas: 2
       update_config:
@@ -24,3 +26,26 @@ services:
         delay: 10s
       restart_policy:
         condition: on-failure
+    networks:
+      - net
+
+  nginx:
+    image: my-nginx-image:latest
+    ports:
+      - "80:80"
+    tty: true
+    deploy:
+      replicas: 1
+      update_config:
+        parallelism: 1
+        delay: 10s
+      restart_policy:
+        condition: on-failure
+    depends_on:
+      - broker
+      - router
+    networks:
+      - net
+
+networks:
+  net:
