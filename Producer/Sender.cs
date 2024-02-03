@@ -4,7 +4,7 @@ using Pathoschild.Http.Client;
 
 public class Sender
 {
-    public async Task Produce(IMessageGenerator messageGenerator)
+    internal async Task Produce(IMessageGenerator messageGenerator)
     {
         Console.WriteLine("Enter a key to start producing messages:");
         var key = Console.ReadLine();
