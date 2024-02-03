@@ -2,7 +2,7 @@
 
 public class RouterNotifier
 {
-    public static void NotifyRouters(List<BrokerData> allBrokers)
+    public void NotifyRouters(RoutingTable routingTable)
     {
         //TODO
     }
