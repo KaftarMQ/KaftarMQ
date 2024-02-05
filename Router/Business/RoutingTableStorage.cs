@@ -4,38 +4,25 @@ namespace Router.Business;
 
 public class RoutingTableStorage
 {
-    private Dictionary<string, string> masterNodes = new Dictionary<string, string>();
-    private Dictionary<string, List<string>> slaveNodes = new Dictionary<string, List<string>>();
+    private List<BrokerData> _brokers = new List<BrokerData>();
+
+    public List<BrokerData> Brokers => _brokers;
 
     public void UpdateBrokers(List<BrokerData> brokers)
     {
-        masterNodes = brokers.Where(x => x.IsMaster).ToDictionary(x => x.Key, x => x.Url);
-
-        slaveNodes = brokers.Where(x => !x.IsMaster)
-            .GroupBy(x => x.Key)
-            .ToDictionary(x => x.Key,
-                x => x.Select(y => y.Url).ToList());
+        brokers.Sort();
+        _brokers = brokers;
     }
 
-    public List<string> GetBrokers(string key)
+    public BrokerData GetMaster(string key)
     {
-        return Enumerable.Repeat(masterNodes[key], 1)
-            .Concat(slaveNodes.ContainsKey(key) ? slaveNodes[key] : Enumerable.Empty<string>())
-            .ToList();
+        var mod = _brokers.Count;
+        return _brokers[key.GetHashCode() % mod];
     }
-
-    public List<string> GetSlaves(string key)
+    
+    public BrokerData GetSlave(string key)
     {
-        return slaveNodes.ContainsKey(key) ? slaveNodes[key] : new List<string>();
-    }
-
-    public string GetMaster(string key)
-    {
-        if (!masterNodes.ContainsKey(key))
-        {
-            throw new Exception($"fucked up key : {key}");
-        }
-
-        return masterNodes[key];
+        var mod = _brokers.Count;
+        return _brokers[(key.GetHashCode()+1) % mod];
     }
 }

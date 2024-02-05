@@ -14,24 +14,13 @@ public class MessagePublisher
 
     public async Task Publish(string key, string value)
     {
-        var brokerUrls = _routingTableStorage.GetBrokers(key);
+        var masterUrl = _routingTableStorage.GetMaster(key).Url;
+        var slaveUrl = _routingTableStorage.GetMaster(key).Url;
 
         var guid = Guid.NewGuid();
-        foreach (var brokerUrl in brokerUrls)
-        {
-            await NotifyClient(brokerUrl, key, value, guid);
-        }
+        await NotifyClient(masterUrl, key, value, guid);
+        await NotifyClient(slaveUrl, key, value, guid);
     }
-    
-    public async Task<Message?> Pull(string key)
-    {
-        var masterUrl = _routingTableStorage.GetMaster(key);
-
-        return await new FluentClient(masterUrl)
-            .PostAsync("message/pull")
-            .WithArgument("key", key).As<Message>();
-    }
-
     
     private static async Task NotifyClient(string clientAddress, string key, string value, Guid id)
     {
@@ -40,13 +29,41 @@ public class MessagePublisher
             .WithArgument("key", key)
             .WithArgument("value", value)
             .WithArgument("id", id);
-        
+
         Console.WriteLine("broker Notified");
     }
 
-    public async Task Subscribe(string key, string clientAddress)
+    public async Task<Message?> Pull()
     {
-        var brokers = _routingTableStorage.GetBrokers(key);
+        var n = _routingTableStorage.Brokers.Count;
+        var i = new Random().Next(n);
+
+        for (var j = (i+1)%n; j == i; j = (j + 1) % n)
+        {
+            var broker = _routingTableStorage.Brokers[j];
+            
+            try
+            {
+                var message = await new FluentClient(broker.Url)
+                    .PostAsync("message/pull")
+                    .As<Message>();
+                
+                
+                 
+                return message;
+            }
+            catch
+            {
+                // ignored
+            }
+        }
+
+        return null;
+    }
+
+    public async Task Subscribe(string clientAddress)
+    {
+        var brokers = _routingTableStorage.(key);
 
         foreach (var broker in brokers)
         {
