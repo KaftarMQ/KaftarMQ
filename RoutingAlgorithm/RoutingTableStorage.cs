@@ -41,6 +41,11 @@ public class RoutingTableStorage
         return GetNextHealthyBroker(GetMasterIndex(key));
     }
 
+    public BrokerData GetMasterSlave(string masterUrl)
+    {
+        return GetNextHealthyBroker(GetBrokerIndex(masterUrl));
+    }
+
     public BrokerData GetNextHealthyBroker(int index)
     {
         var mod = Brokers.Count;
@@ -69,6 +74,11 @@ public class RoutingTableStorage
         }
 
         return hash;
+    }
+
+    private int GetBrokerIndex(string url)
+    {
+        return Brokers.FindIndex(b => b.Url == url);
     }
 
     public IEnumerable<string> GetNotFailedBrokers()
