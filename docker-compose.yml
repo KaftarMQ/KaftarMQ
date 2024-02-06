@@ -4,7 +4,7 @@ services:
   broker:
     image: kaftarmq/broker:local
     ports:
-      - "8080:20000"
+      - "30000:20000"
     deploy:
       replicas: 2
       update_config:
@@ -18,7 +18,7 @@ services:
   router:
     image: kaftarmq/router:local
     ports:
-      - "8081:30000"
+      - "30004:20004"
     deploy:
       replicas: 2
       update_config:
@@ -46,6 +46,26 @@ services:
       - router
     networks:
       - net
-
+        
+  prometheus:
+    image: bitnami/prometheus:latest
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    ports:
+      - "9092:9090"
+    deploy:
+      mode: replicated
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+    networks:
+      - net
+    command:
+    - '--web.enable-lifecycle'
+    - '--config.file=/etc/prometheus/prometheus.yml'
+    - '--storage.tsdb.path=/prometheus'
+    - '--web.console.libraries=/usr/share/prometheus/console_libraries'
+    - '--web.console.templates=/usr/share/prometheus/consoles'
+    - '--web.enable-admin-api'
 networks:
   net:
