@@ -21,7 +21,7 @@ public class MessagePublisher
     public async Task Publish(string key, string value)
     {
         var masterUrl = _routingTableStorage.GetMaster(key).Url;
-        var slaveUrl = _routingTableStorage.GetMaster(key).Url;
+        var slaveUrl = _routingTableStorage.GetSlave(key).Url;
 
         var guid = Guid.NewGuid();
         await PublishMessageToBroker(slaveUrl, key, value, guid, true);
