@@ -6,7 +6,7 @@ public class RoutingTableStorage
 {
     public List<BrokerData> Brokers { get; private set; } = new();
 
-    private bool _brokersInitialized = false;
+    private bool _brokersInitialized;
 
     public void UpdateBrokers(List<BrokerData> brokers)
     {
@@ -56,7 +56,6 @@ public class RoutingTableStorage
         return brokerData;
     }
 
-
     private int GetMasterIndex(string key)
     {
         var mod = Brokers.Count;
@@ -70,5 +69,10 @@ public class RoutingTableStorage
         }
 
         return hash;
+    }
+
+    public IEnumerable<string> GetNotFailedBrokers()
+    {
+        return Brokers.Where(b => !b.IsFailed).Select(b => b.Url);
     }
 }

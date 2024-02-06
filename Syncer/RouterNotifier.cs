@@ -5,9 +5,16 @@ namespace Syncer;
 
 public class RouterNotifier
 {
+    private readonly RoutingTableStorage _routingTableStorage;
+
+    public RouterNotifier(RoutingTableStorage routingTableStorage)
+    {
+        _routingTableStorage = routingTableStorage;
+    }
+
     public async Task NotifyRoutersTheBrokers()
     {
-        var brokers = ENVIRONMENT.ALL_BROKERS;
+        var brokers = _routingTableStorage.GetNotFailedBrokers();
 
         foreach (var router in ENVIRONMENT.ALL_ROUTERS)
         {

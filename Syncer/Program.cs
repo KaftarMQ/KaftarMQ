@@ -1,10 +1,16 @@
+using RoutingAlgorithm;
 using Syncer;
+
+var routingTableStorage = new RoutingTableStorage();
+var allBrokers = ENVIRONMENT.ALL_BROKERS.Select(u => new BrokerData(u, false)).ToList();
+routingTableStorage.UpdateBrokers(allBrokers);
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddSingleton(routingTableStorage);
 
 var app = builder.Build();
 
@@ -19,9 +25,9 @@ app.MapControllers();
 app.UseHttpsRedirection();
 
 await Task.Delay(TimeSpan.FromSeconds(20));
-await new RouterNotifier().NotifyRoutersTheBrokers();
+await new RouterNotifier(routingTableStorage).NotifyRoutersTheBrokers();
 
-var brokerHealthChecker = new BrokerHealthChecker();
+var brokerHealthChecker = new BrokerHealthChecker(routingTableStorage);
 Task.Run(async () =>
 {
     while (true)

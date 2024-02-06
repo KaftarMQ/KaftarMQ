@@ -2,8 +2,8 @@ namespace Broker;
 
 public class Broker
 {
-    private readonly LinkedList<Message> _masterMessages = new();
-    private readonly LinkedList<Message> _slaveMessages = new();
+    private LinkedList<Message> _masterMessages = new();
+    private LinkedList<Message> _slaveMessages = new();
 
     public void PushMessage(string key, string value, Guid id, bool isReplication)
     {
@@ -46,6 +46,18 @@ public class Broker
             if (message is not null)
             {
                 _slaveMessages.Remove(message);
+            }
+        }
+    }
+
+    public void MoveSlaveContentToMaster()
+    {
+        lock (_masterMessages)
+        {
+            lock (_slaveMessages)
+            {
+                _masterMessages = new LinkedList<Message>(_masterMessages.Concat(_slaveMessages));
+                _slaveMessages = new LinkedList<Message>();
             }
         }
     }

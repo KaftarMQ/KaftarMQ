@@ -37,5 +37,12 @@ public class MessageController : ControllerBase
     {
         _broker.DropSlave(messageId);
         return Ok();
+    }   
+
+    [HttpGet("MoveSlaveContentToMaster")]
+    public ActionResult<Message?> MoveSlaveContentToMaster()
+    {
+        _broker.MoveSlaveContentToMaster();
+        return Ok();
     }
 }
