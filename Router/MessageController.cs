@@ -1,8 +1,10 @@
-using Broker.Classes;
+using Broker;
 using Microsoft.AspNetCore.Mvc;
 using Router.Business;
+using RoutingAlgorithm;
+using Syncer;
 
-namespace Broker;
+namespace Router;
 
 [ApiController]
 [Route("[controller]")]
@@ -42,9 +44,17 @@ public class MessageController : ControllerBase
     
     //syncer call this
     [HttpPost("update_brokers")]
-    public IActionResult UpdateBrokers(List<BrokerData> brokers)
+    public IActionResult UpdateBrokers(List<string> brokers)
     {
-        _routingTableStorage.UpdateBrokers(brokers);
+        _routingTableStorage.UpdateBrokers(brokers.Select(u => new BrokerData(u, false)).ToList());
+        return Ok();
+    }    
+
+    //syncer call this
+    [HttpPost("UpdateBrokerFailure")]
+    public IActionResult UpdateBrokerFailure(string brokerUrl)
+    {
+        _routingTableStorage.UpdateBrokerFailure(brokerUrl);
         return Ok();
     }
 }
