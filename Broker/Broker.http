@@ -1,6 +1,0 @@
-@Broker_HostAddress = http://localhost:5154
-
-GET {{Broker_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###

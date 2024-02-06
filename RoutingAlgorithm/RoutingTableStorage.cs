@@ -15,7 +15,7 @@ public class RoutingTableStorage
             throw new Exception("Brokers are already initialized");
         }
 
-        brokers.Sort();
+        brokers.Sort(BrokerData.UrlComparer);
         Brokers = brokers;
         _brokersInitialized = true;
     }

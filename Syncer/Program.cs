@@ -24,7 +24,7 @@ if (app.Environment.IsDevelopment())
 app.MapControllers();
 app.UseHttpsRedirection();
 
-await Task.Delay(TimeSpan.FromSeconds(20));
+//await Task.Delay(TimeSpan.FromSeconds(20)); // todo if needed  
 await new RouterNotifier(routingTableStorage).NotifyRoutersTheBrokers();
 
 var brokerHealthChecker = new BrokerHealthChecker(routingTableStorage);

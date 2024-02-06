@@ -1,4 +1,5 @@
 ﻿using Pathoschild.Http.Client;
+using RoutingAlgorithm;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,10 +22,12 @@ if (string.IsNullOrEmpty(keyToSubscribe))
     keyToSubscribe = "default";
 }
 
-await new FluentClient("http://localhost:5154")
+const string CLIENT_ADDRESS = "http://localhost:5000";
+
+await new FluentClient(ENVIRONMENT.NGINX)
     .PostAsync("message/subscribe")
     .WithArgument("key", keyToSubscribe)
-    .WithArgument("clientAddress", "http://localhost:5000");
+    .WithArgument("clientAddress", CLIENT_ADDRESS);
 
 app.MapControllers();
 app.UseHttpsRedirection();

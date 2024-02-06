@@ -22,4 +22,8 @@
       <Compile Remove="MessageGenerator.cs" />
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\RoutingAlgorithm\RoutingAlgorithm.csproj" />
+    </ItemGroup>
+
 </Project>

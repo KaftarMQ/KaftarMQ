@@ -1,6 +1,5 @@
-﻿using System.Text;
-using Pathoschild.Http.Client;
-
+﻿using Pathoschild.Http.Client;
+using RoutingAlgorithm;
 
 public class Sender
 {
@@ -17,7 +16,7 @@ public class Sender
         {
             var message = messageGenerator.GetNext();
 
-            await new FluentClient("http://localhost:5154")
+            await new FluentClient(ENVIRONMENT.NGINX)
                 .PostAsync("message/push")
                 .WithArgument("key", key)
                 .WithArgument("value", message);
