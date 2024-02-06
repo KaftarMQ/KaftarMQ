@@ -1,0 +1,9 @@
+﻿global:
+  scrape_interval: 15s
+
+scrape_configs:
+  - job_name: 'docker'
+    relabel_configs:
+      - source_labels: [__meta_docker_service_name]
+        regex: '(broker|router|nginx)'
+        action: keep
