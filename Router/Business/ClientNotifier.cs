@@ -1,8 +1,9 @@
+﻿using Broker;
 using Pathoschild.Http.Client;
 
-namespace Broker;
+namespace Router.Business;
 
-public class ClientNotifier : IClientNotifier
+public class ClientNotifier
 {
     public async Task NotifyClient(string clientAddress, Message message)
     {

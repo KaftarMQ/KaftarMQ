@@ -1,9 +1,10 @@
-using System.Text;
-using Broker.Classes;
+using Broker;
 using Microsoft.AspNetCore.Mvc;
 using Router.Business;
+using RoutingAlgorithm;
+using Syncer;
 
-namespace Broker;
+namespace Router;
 
 [ApiController]
 [Route("[controller]")]
@@ -27,32 +28,33 @@ public class MessageController : ControllerBase
     }
 
     [HttpGet]
-    public ActionResult<Message?> Pull(string key)
+    public ActionResult<Message?> Pull()
     {
-        Console.WriteLine($"Pulling message with key: {key}");
-        return _messagePublisher.Pull(key).GetAwaiter().GetResult();
+        Console.WriteLine($"Pulling message");
+        return _messagePublisher.Pull().GetAwaiter().GetResult();
     }
 
     [HttpPost("subscribe")]
-    public IActionResult Subscribe(string key, string clientAddress)
+    public IActionResult Subscribe(string clientAddress)
     {
-        Console.WriteLine($"Subscribing message with key: {key} and clientAddress : {clientAddress}");
-        _messagePublisher.Subscribe(key, clientAddress).GetAwaiter().GetResult();
+        Console.WriteLine($"Subscribing message with clientAddress : {clientAddress}");
+        _messagePublisher.Subscribe(clientAddress).GetAwaiter().GetResult();
         return Ok();
     }
     
     //syncer call this
     [HttpPost("update_brokers")]
-    public IActionResult UpdateBrokers(List<BrokerData> brokers)
+    public IActionResult UpdateBrokers(List<string> brokers)
     {
-        _routingTableStorage.UpdateBrokers(brokers);
+        _routingTableStorage.UpdateBrokers(brokers.Select(u => new BrokerData(u, false)).ToList());
         return Ok();
-    }
-    
-    [HttpPost("UpdatePointer")]
-    public IActionResult UpdatePointer(string key, Guid lastConsumedMessageId)
+    }    
+
+    //syncer call this
+    [HttpPost("UpdateBrokerFailure")]
+    public IActionResult UpdateBrokerFailure(string brokerUrl)
     {
-        _messagePublisher.UpdatePointer(key, lastConsumedMessageId).GetAwaiter().GetResult();
+        _routingTableStorage.UpdateBrokerFailure(brokerUrl);
         return Ok();
     }
 }

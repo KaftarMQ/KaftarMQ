@@ -1,19 +1,15 @@
-using Broker;
-using Broker.Storage;
-
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddSingleton<IBroker, Broker.Broker>();
-builder.Services.AddSingleton<IMessageStore, MemoryMessageStore>();
-builder.Services.AddSingleton<IClientNotifier, ClientNotifier>();
-builder.Services.AddSingleton<ReplicationMetadata>();
+builder.Services.AddSingleton<Broker.Broker>();
+builder.Services.AddHealthChecks();
 
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
+app.MapHealthChecks("/health");
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();

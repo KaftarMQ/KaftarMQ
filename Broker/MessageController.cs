@@ -1,4 +1,3 @@
-using System.Text;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Broker;
@@ -7,41 +6,36 @@ namespace Broker;
 [Route("[controller]")]
 public class MessageController : ControllerBase
 {
-    private readonly IBroker _broker;
+    private readonly Broker _broker;
 
-    public MessageController(IBroker broker)
+    public MessageController(Broker broker)
     {
         _broker = broker;
     }
 
     [HttpPost("push")]
-    public IActionResult Push(string key, string value, Guid id)
+    public IActionResult Push(string key, string value, Guid id, bool isReplication)
     {
-        Console.WriteLine($"Pushing message with key: {key}, value: {value}");
+        Console.WriteLine($"Pushing message with key: {key}, value: {value}, isReplication: {isReplication}");
         if (string.IsNullOrEmpty(key))
         {
             key = "default";
         }
 
-        _broker.PushMessage(key, value, id);
+        _broker.PushMessage(key, value, id, isReplication);
         return Ok();
     }
 
-    [HttpGet]
-    public ActionResult<Message?> Pull(string key)
+    [HttpGet("Pull")]
+    public ActionResult<Message?> Pull()
     {
-        return Ok(_broker.PullMessage(key));
+        return Ok(_broker.PullMessage());
     }
-
-    [HttpPost("subscribe")]
-    public IActionResult Subscribe(string key, string clientAddress)
+    
+    [HttpGet("PullSlave")]
+    public ActionResult<Message?> PullSlave(Guid messageId)
     {
-        if (string.IsNullOrEmpty(key))
-        {
-            key = "default";
-        }
-
-        _broker.AddSubscriber(key, clientAddress);
+        _broker.DropSlave(messageId);
         return Ok();
     }
 }

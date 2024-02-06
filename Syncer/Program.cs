@@ -5,8 +5,6 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddSingleton<RoutingCoordinator>();
-
 
 var app = builder.Build();
 
@@ -19,5 +17,18 @@ if (app.Environment.IsDevelopment())
 
 app.MapControllers();
 app.UseHttpsRedirection();
+
+await Task.Delay(TimeSpan.FromSeconds(20));
+await new RouterNotifier().NotifyRoutersTheBrokers();
+
+var brokerHealthChecker = new BrokerHealthChecker();
+Task.Run(async () =>
+{
+    while (true)
+    {
+        await brokerHealthChecker.CheckHealthOfBrokers();
+        await Task.Delay(TimeSpan.FromSeconds(10));
+    }
+});
 
 app.Run();
