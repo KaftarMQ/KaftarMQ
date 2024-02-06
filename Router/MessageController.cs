@@ -1,4 +1,3 @@
-using System.Text;
 using Broker.Classes;
 using Microsoft.AspNetCore.Mvc;
 using Router.Business;
@@ -27,17 +26,17 @@ public class MessageController : ControllerBase
     }
 
     [HttpGet]
-    public ActionResult<Message?> Pull(string key)
+    public ActionResult<Message?> Pull()
     {
-        Console.WriteLine($"Pulling message with key: {key}");
-        return _messagePublisher.Pull(key).GetAwaiter().GetResult();
+        Console.WriteLine($"Pulling message");
+        return _messagePublisher.Pull().GetAwaiter().GetResult();
     }
 
     [HttpPost("subscribe")]
-    public IActionResult Subscribe(string key, string clientAddress)
+    public IActionResult Subscribe(string clientAddress)
     {
-        Console.WriteLine($"Subscribing message with key: {key} and clientAddress : {clientAddress}");
-        _messagePublisher.Subscribe(key, clientAddress).GetAwaiter().GetResult();
+        Console.WriteLine($"Subscribing message with clientAddress : {clientAddress}");
+        _messagePublisher.Subscribe(clientAddress).GetAwaiter().GetResult();
         return Ok();
     }
     
@@ -46,13 +45,6 @@ public class MessageController : ControllerBase
     public IActionResult UpdateBrokers(List<BrokerData> brokers)
     {
         _routingTableStorage.UpdateBrokers(brokers);
-        return Ok();
-    }
-    
-    [HttpPost("UpdatePointer")]
-    public IActionResult UpdatePointer(string key, Guid lastConsumedMessageId)
-    {
-        _messagePublisher.UpdatePointer(key, lastConsumedMessageId).GetAwaiter().GetResult();
         return Ok();
     }
 }
