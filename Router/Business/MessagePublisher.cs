@@ -24,17 +24,18 @@ public class MessagePublisher
         var slaveUrl = _routingTableStorage.GetMaster(key).Url;
 
         var guid = Guid.NewGuid();
-        await PublishMessageToBroker(slaveUrl, key, value, guid);
-        await PublishMessageToBroker(masterUrl, key, value, guid);
+        await PublishMessageToBroker(slaveUrl, key, value, guid, true);
+        await PublishMessageToBroker(masterUrl, key, value, guid, false);
     }
     
-    private static async Task PublishMessageToBroker(string clientAddress, string key, string value, Guid id)
+    private static async Task PublishMessageToBroker(string clientAddress, string key, string value, Guid id, bool isReplication)
     {
         await new FluentClient(clientAddress)
             .PostAsync("message/push")
             .WithArgument("key", key)
             .WithArgument("value", value)
-            .WithArgument("id", id);
+            .WithArgument("id", id)
+            .WithArgument("isReplication", isReplication);
 
         Console.WriteLine("broker Notified");
     }

@@ -33,8 +33,8 @@ public class PullHandler
                     .PostAsync("message/pull")
                     .As<Message>();
 
-                await new FluentClient(masterBroker.Url)
-                    .PostAsync("message/pull-slave")
+                await new FluentClient(slaveBroker.Url)
+                    .PostAsync("message/pullSlave")
                     .WithArgument("key", message.Key)
                     .WithArgument("id", message.Id);
                 
