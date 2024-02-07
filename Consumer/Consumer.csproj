@@ -9,6 +9,9 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="App.Metrics" Version="4.3.0" />
+        <PackageReference Include="App.Metrics.AspNetCore" Version="4.3.0" />
+        <PackageReference Include="App.Metrics.Formatters.Prometheus" Version="4.3.0" />
         <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.0"/>
         <PackageReference Include="Pathoschild.Http.FluentClient" Version="4.3.0" />
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0"/>

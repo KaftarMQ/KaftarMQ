@@ -6,4 +6,10 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <ItemGroup>
+      <PackageReference Include="App.Metrics" Version="4.3.0" />
+      <PackageReference Include="App.Metrics.AspNetCore" Version="4.3.0" />
+      <PackageReference Include="App.Metrics.Formatters.Prometheus" Version="4.3.0" />
+    </ItemGroup>
+
 </Project>
