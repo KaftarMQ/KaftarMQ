@@ -1,4 +1,4 @@
-@Router_HostAddress = http://localhost:5274
+@Router_HostAddress = http://router
 
 GET {{Router_HostAddress}}/weatherforecast/
 Accept: application/json

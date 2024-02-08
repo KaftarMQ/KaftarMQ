@@ -1,4 +1,4 @@
-@Syncer_HostAddress = http://localhost:5269
+@Syncer_HostAddress = http://syncer
 
 GET {{Syncer_HostAddress}}/weatherforecast/
 Accept: application/json

@@ -4,29 +4,15 @@
 scrape_configs:
   - job_name: 'broker'
     static_configs:
-      - targets: ['broker']
-    metrics_path: '/metrics-text'
-    relabel_configs:
-      - source_labels: [__address__]
-        target_label: instance
+      - targets: ['localhost:80']
+    metrics_path: '/broker/metrics'
+
   - job_name: 'router'
     static_configs:
-      - targets: ['router']
-    metrics_path: '/metrics-text'
-    relabel_configs:
-      - source_labels: [__address__]
-        target_label: instance
-  - job_name: 'consumer'
-    static_configs:
-      - targets: ['consumer']
-    metrics_path: '/metrics-text'
-    relabel_configs:
-      - source_labels: [__address__]
-        target_label: instance
+      - targets: ['localhost:80']
+    metrics_path: '/router/metrics'
+
   - job_name: 'syncer'
     static_configs:
-      - targets: ['syncer']
-    metrics_path: '/metrics-text'
-    relabel_configs:
-      - source_labels: [__address__]
-        target_label: instance
+      - targets: ['localhost:80']
+    metrics_path: '/syncer/metrics'
