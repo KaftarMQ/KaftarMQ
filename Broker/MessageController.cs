@@ -16,7 +16,7 @@ public class MessageController : ControllerBase
     [HttpPost("push")]
     public IActionResult Push(string key, string value, Guid id, bool isReplication)
     {
-        Console.WriteLine($"Pushing message with key: {key}, value: {value}, isReplication: {isReplication}");
+        Console.WriteLine($"Received message with key: {key}, value: {value}, isReplication: {isReplication}");
         if (string.IsNullOrEmpty(key))
         {
             key = "default";

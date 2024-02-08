@@ -3,6 +3,11 @@ using App.Metrics.Formatters.Prometheus;
 using Router.Business;
 using RoutingAlgorithm;
 
+var clientNotifier = new ClientNotifier();
+var routingTableStorage = new RoutingTableStorage();
+var pullHandler = new PullHandler(routingTableStorage);
+var subscribeHandler = new SubscribeHandler(pullHandler, clientNotifier);
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Configure App.Metrics
@@ -21,11 +26,11 @@ builder.Services.AddMetricsTrackingMiddleware();
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddSingleton<RoutingTableStorage>();
 builder.Services.AddSingleton<MessagePublisher>();
-builder.Services.AddSingleton<SubscribeHandler>();
-builder.Services.AddSingleton<PullHandler>();
-builder.Services.AddSingleton<ClientNotifier>();
+builder.Services.AddSingleton(routingTableStorage);
+builder.Services.AddSingleton(subscribeHandler);
+builder.Services.AddSingleton(pullHandler);
+builder.Services.AddSingleton(clientNotifier);
 
 var app = builder.Build();
 

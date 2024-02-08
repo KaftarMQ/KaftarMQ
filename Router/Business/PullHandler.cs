@@ -23,7 +23,7 @@ public class PullHandler
         var n = _routingTableStorage.Brokers.Count;
         var i = new Random().Next(n);
 
-        for (var j = I_R_N(i+1, n); j == i+1; j = I_R_N(j+1, n))
+        for (var j = I_R_N(i+1, n); j < i+1; j = I_R_N(j+1, n))
         {
             var masterBroker = _routingTableStorage.Brokers[j];
             if(masterBroker.IsFailed) continue;
@@ -33,27 +33,27 @@ public class PullHandler
             try
             {
                 var message = await new FluentClient(masterBroker.Url)
-                    .PostAsync("message/pull")
+                    .GetAsync("Message/Pull")
                     .As<Message>();
 
                 try
                 {
 
                     await new FluentClient(slaveBroker.Url)
-                        .PostAsync("message/pullSlave")
+                        .GetAsync("Message/PullSlave")
                         .WithArgument("key", message.Key)
                         .WithArgument("id", message.Id);
                 }
-                catch
+                catch (Exception ex)
                 {
-                    
+                    Console.WriteLine($"Failed pulling from slave {slaveBroker.Url}: \n{ex}");
                 }
                 
                 return message;
             }
-            catch
+            catch (Exception ex)
             {
-                // ignored
+                Console.WriteLine($"Failed pulling from {masterBroker.Url}: \n{ex}");
             }
         }
 
