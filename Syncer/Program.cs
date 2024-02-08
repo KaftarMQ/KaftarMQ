@@ -26,6 +26,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddSingleton(routingTableStorage);
+builder.Services.AddHealthChecks();
 
 var app = builder.Build();
 
@@ -33,6 +34,7 @@ var app = builder.Build();
 app.UseMetricsAllMiddleware();
 app.UseMetricsAllEndpoints();
 
+app.MapHealthChecks("/health");
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();

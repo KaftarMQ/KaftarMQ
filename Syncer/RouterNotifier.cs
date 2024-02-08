@@ -20,7 +20,7 @@ public class RouterNotifier
         {
             await new FluentClient(router)
                 .PostAsync("message/updateBrokers")
-                .WithArgument("brokers", brokers);
+                .WithBody(brokers.ToArray());
         }
     }
 

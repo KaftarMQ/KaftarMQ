@@ -34,17 +34,10 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-var keyToSubscribe = Console.ReadLine();
-if (string.IsNullOrEmpty(keyToSubscribe))
-{
-    keyToSubscribe = "default";
-}
-
 const string CLIENT_ADDRESS = "http://localhost:5000";
 
 await new FluentClient(ENVIRONMENT.NGINX)
     .PostAsync("message/subscribe")
-    .WithArgument("key", keyToSubscribe)
     .WithArgument("clientAddress", CLIENT_ADDRESS);
 
 app.MapControllers();

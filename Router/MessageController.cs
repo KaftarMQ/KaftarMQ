@@ -44,7 +44,7 @@ public class MessageController : ControllerBase
     
     //syncer call this
     [HttpPost("updateBrokers")]
-    public ActionResult UpdateBrokers([FromHeader(Name = "brokers")] List<string> brokers)
+    public ActionResult UpdateBrokers([FromBody] string[] brokers)
     {
         _routingTableStorage.UpdateBrokers(brokers.Select(u => new BrokerData(u, false)).ToList());
         return Ok();
