@@ -19,7 +19,7 @@ public class RouterNotifier
         foreach (var router in ENVIRONMENT.ALL_ROUTERS)
         {
             await new FluentClient(router)
-                .PostAsync("message/update_brokers")
+                .PostAsync("message/updateBrokers")
                 .WithArgument("brokers", brokers);
         }
     }

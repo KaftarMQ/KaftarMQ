@@ -27,7 +27,7 @@ public class MessageController : ControllerBase
         return Ok();
     }
 
-    [HttpGet]
+    [HttpGet("pull")]
     public ActionResult<Message?> Pull()
     {
         Console.WriteLine($"Pulling message");
@@ -43,8 +43,8 @@ public class MessageController : ControllerBase
     }
     
     //syncer call this
-    [HttpPost("update_brokers")]
-    public IActionResult UpdateBrokers(List<string> brokers)
+    [HttpPost("updateBrokers")]
+    public ActionResult UpdateBrokers([FromHeader(Name = "brokers")] List<string> brokers)
     {
         _routingTableStorage.UpdateBrokers(brokers.Select(u => new BrokerData(u, false)).ToList());
         return Ok();
