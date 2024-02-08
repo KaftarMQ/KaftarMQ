@@ -1,4 +1,7 @@
-﻿namespace Syncer;
+﻿using System;
+using System.Collections.Generic;
+
+namespace Syncer;
 
 public class BrokerData
 {

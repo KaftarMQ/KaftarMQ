@@ -1,22 +1,22 @@
 ﻿curl -X 'POST' \
-  'http://localhost:5274/Message/push?key=salam&value=bye' \
+  'http://localhost/router/Message/push?key=salam&value=bye' \
   -H 'accept: */*' \
   -d ''
   
   
 curl -X 'GET' \
-  'http://localhost:5274/Message/pull' \
+  'http://localhost/router/Message/pull' \
   -H 'accept: text/plain'
   
 
 curl -X 'POST' \
-  'http://localhost:5274/Message/subscribe?clientAddress=myAddress' \
+  'http://localhost/router/Message/subscribe?clientAddress=myAddress' \
   -H 'accept: */*' \
   -d ''
   
 
 curl -X 'POST' \
-  'http://localhost:5274/Message/updateBrokers' \
+  'http://localhost/router/Message/updateBrokers' \
   -H 'accept: */*' \
   -H 'Content-Type: application/json' \
   -d '[
@@ -25,7 +25,7 @@ curl -X 'POST' \
 
 
 curl -X 'POST' \
-  'http://localhost:5274/Message/UpdateBrokerFailure?brokerUrl=newFailedBrokerUrl' \
+  'http://localhost/router/Message/UpdateBrokerFailure?brokerUrl=newFailedBrokerUrl' \
   -H 'accept: */*' \
   -d ''
 
