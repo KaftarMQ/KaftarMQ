@@ -82,10 +82,8 @@ services:
       - "13000:3000"
     volumes:
       - grafana_data:/var/lib/grafana
-    depends_on:
-      - prometheus
-    networks:
-      - net
+      - ./grafana/provisioning/dashboards:/etc/grafana/provisioning/dashboards # Mount the directory containing your dashboard JSON files
+      - ./grafana/provisioning/datasources:/etc/grafana/provisioning/datasources # Mount the directory containing your datasource YAML files
     environment:
       - GF_SECURITY_ADMIN_USER=admin
       - GF_SECURITY_ADMIN_PASSWORD=admin
@@ -95,6 +93,10 @@ services:
       - GF_DATASOURCES_DEFAULT_ACCESS=proxy
       - GF_SERVER_ROOT_URL=http://localhost:3000
       - GF_SERVER_SERVE_FROM_SUB_PATH=true
+    depends_on:
+      - prometheus
+    networks:
+      - net
   
   node_exporter:
     image: prom/node-exporter:latest
