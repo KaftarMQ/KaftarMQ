@@ -28,9 +28,9 @@ services:
   syncer:
     image: kaftarmq/syncer:local
     deploy:
-      replicas: 2
+      replicas: 1
       update_config:
-        parallelism: 2
+        parallelism: 1
         delay: 10s
       restart_policy:
         condition: on-failure
@@ -41,7 +41,6 @@ services:
     image: my-nginx-image:latest
     ports:
       - "80:80"
-    tty: true
     deploy:
       replicas: 1
       update_config:
@@ -60,10 +59,10 @@ services:
     image: bitnami/prometheus:latest
     volumes:
       - ./prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./rules.yml:/etc/prometheus/rules.yml  # Mount the rules file
     ports:
       - "9092:9090"
     deploy:
-      mode: replicated
       replicas: 1
       restart_policy:
         condition: on-failure
@@ -97,8 +96,8 @@ services:
       - GF_SERVER_ROOT_URL=http://localhost:3000
       - GF_SERVER_SERVE_FROM_SUB_PATH=true
 
-volumes:
-  grafana_data:
-
 networks:
   net:
+
+volumes:
+  grafana_data:

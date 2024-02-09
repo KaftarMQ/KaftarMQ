@@ -1,0 +1,6 @@
+groups:
+- name: instance-counts
+  interval: 30s  # How often to evaluate the rules
+  rules:
+  - record: job:instances:count
+    expr: count(up) by (job)
