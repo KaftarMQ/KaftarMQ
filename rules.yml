@@ -4,3 +4,9 @@ groups:
   rules:
   - record: job:instances:count
     expr: count(up) by (job)
+    
+- name: node_metrics
+  interval: 30s
+  rules:
+    - record: job:memory:used
+      expr: sum(node_memory_MemTotal_bytes) - sum(node_memory_MemFree_bytes)

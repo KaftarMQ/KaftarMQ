@@ -1,6 +1,7 @@
-docker stack deploy -c docker-compose.yml my_stack
+docker stack deploy -c docker-compose.yml kaftarmq
 PS C:\Users\Amir\RiderProjects\KaftarMQ> docker build -t my-nginx-image:latest . 
 PS C:\Users\Amir\RiderProjects\KaftarMQ\Router> docker build -t kaftarmq/router:local .
 
 prometheus queries:
    1:number of nodes: count(up) by (job)
+   2:memory :sum(node_memory_MemTotal_bytes - (node_memory_MemFree_bytes + node_memory_Buffers_bytes + node_memory_Cached_bytes))

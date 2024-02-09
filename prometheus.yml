@@ -24,8 +24,18 @@ scrape_configs:
         port: 80
 
   - job_name: 'nginx'
-    static_configs:
-      - targets: ['nginx']
+    dns_sd_configs:
+      - names:
+          - 'tasks.nginx'
+        type: 'A'
+        port: 80
+
+  - job_name: 'node'
+    dns_sd_configs:
+      - names:
+          - 'tasks.node_exporter'
+        type: 'A'
+        port: 9100
 
 rule_files:
   - "rules.yml"

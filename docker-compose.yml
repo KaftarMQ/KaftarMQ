@@ -95,6 +95,17 @@ services:
       - GF_DATASOURCES_DEFAULT_ACCESS=proxy
       - GF_SERVER_ROOT_URL=http://localhost:3000
       - GF_SERVER_SERVE_FROM_SUB_PATH=true
+  
+  node_exporter:
+    image: prom/node-exporter:latest
+    ports:
+      - "9100:9100"
+    networks:
+      - net
+    deploy:
+      mode: global  # This deploys node_exporter on every node in the swarm
+      placement:
+        constraints: [ node.role == manager ]  # Adjust if you want to deploy on workers too
 
 networks:
   net:
