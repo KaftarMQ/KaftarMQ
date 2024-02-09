@@ -32,6 +32,9 @@ builder.Services.AddSingleton(subscribeHandler);
 builder.Services.AddSingleton(pullHandler);
 builder.Services.AddSingleton(clientNotifier);
 
+builder.Services.AddSingleton<IMetrics>(metrics);
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
