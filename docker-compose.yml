@@ -82,8 +82,8 @@ services:
       - "13000:3000"
     volumes:
       - grafana_data:/var/lib/grafana
-      - ./grafana/provisioning/dashboards:/etc/grafana/provisioning/dashboards # Mount the directory containing your dashboard JSON files
-      - ./grafana/provisioning/datasources:/etc/grafana/provisioning/datasources # Mount the directory containing your datasource YAML files
+      - ./grafana/provisioning/dashboards:/etc/grafana/provisioning/dashboards 
+      - ./grafana/provisioning/datasources:/etc/grafana/provisioning/datasources 
     environment:
       - GF_SECURITY_ADMIN_USER=admin
       - GF_SECURITY_ADMIN_PASSWORD=admin

@@ -9,10 +9,16 @@ groups:
   interval: 30s
   rules:
     - record: job:memory:used
-      expr: sum(node_memory_MemTotal_bytes) - sum(node_memory_MemFree_bytes)
+      expr: sum(node_memory_MemTotal_bytes) - sum(node_memory_MemFree_bytes + node_memory_Buffers_bytes + node_memory_Cached_bytes)
       
 - name: application_metrics
   interval: 30s
   rules:
     - record: router:push_requests_per_second
       expr: rate(application_router_push_requests_total[1m])
+      
+- name: application_metrics_total
+  interval: 30s
+  rules:
+    - record: router:push_requests_per_second_total
+      expr: sum(rate(application_router_push_requests_total[1m])) by (job)
