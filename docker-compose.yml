@@ -83,7 +83,8 @@ services:
     volumes:
       - grafana_data:/var/lib/grafana
       - ./grafana/provisioning/dashboards:/etc/grafana/provisioning/dashboards 
-      - ./grafana/provisioning/datasources:/etc/grafana/provisioning/datasources 
+      - ./grafana/provisioning/datasources:/etc/grafana/provisioning/datasources
+      - ./grafana/provisioning/notifiers:/etc/grafana/provisioning/notifiers
     environment:
       - GF_SECURITY_ADMIN_USER=admin
       - GF_SECURITY_ADMIN_PASSWORD=admin
@@ -93,6 +94,12 @@ services:
       - GF_DATASOURCES_DEFAULT_ACCESS=proxy
       - GF_SERVER_ROOT_URL=http://localhost:3000
       - GF_SERVER_SERVE_FROM_SUB_PATH=true
+      - GF_SMTP_ENABLED=true
+      - GF_SMTP_HOST=smtp.gmail.com:587
+      - GF_SMTP_USER=kaftarmq@gmail.com
+      - GF_SMTP_PASSWORD=zleeogfsawefxdwl
+      - GF_SMTP_SKIP_VERIFY=true
+      - GF_SMTP_FROM_ADDRESS=kaftarmq@gmail.com
     depends_on:
       - prometheus
     networks:

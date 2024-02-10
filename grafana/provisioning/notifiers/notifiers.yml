@@ -1,0 +1,93 @@
+apiVersion: 1
+groups:
+    - orgId: 1
+      name: alert
+      folder: alert
+      interval: 30s
+      rules:
+        - uid: b242c280-b190-45a2-8987-10183890bda7
+          title: job:memory:used
+          condition: C
+          data:
+            - refId: A
+              relativeTimeRange:
+                from: 21600
+                to: 0
+              datasourceUid: b2d5b600-b4f0-4520-8b4d-7b4c7f4c81a4
+              model:
+                datasource:
+                    type: prometheus
+                    uid: b2d5b600-b4f0-4520-8b4d-7b4c7f4c81a4
+                disableTextWrap: false
+                editorMode: builder
+                expr: job:memory:used
+                fullMetaSearch: false
+                includeNullMetadata: true
+                instant: false
+                interval: ""
+                intervalMs: 15000
+                legendFormat: __auto
+                maxDataPoints: 43200
+                range: true
+                refId: A
+                useBackend: false
+            - refId: B
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params: []
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params:
+                            - B
+                      reducer:
+                        params: []
+                        type: last
+                      type: query
+                datasource:
+                    type: __expr__
+                    uid: __expr__
+                expression: A
+                intervalMs: 1000
+                maxDataPoints: 43200
+                reducer: last
+                refId: B
+                type: reduce
+            - refId: C
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params:
+                            - 8e+09
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params:
+                            - C
+                      reducer:
+                        params: []
+                        type: last
+                      type: query
+                datasource:
+                    type: __expr__
+                    uid: __expr__
+                expression: B
+                intervalMs: 1000
+                maxDataPoints: 43200
+                refId: C
+                type: threshold
+          dashboardUid: ad9e145e-92d4-4471-bb31-01a69e130568
+          panelId: 3
+          noDataState: NoData
+          execErrState: Error
+          for: 5m
+          annotations:
+            __dashboardUid__: ad9e145e-92d4-4471-bb31-01a69e130568
+            __panelId__: "3"
+          labels: {}
+          isPaused: false
