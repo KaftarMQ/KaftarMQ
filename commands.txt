@@ -1,5 +1,6 @@
 docker-compose build
 docker stack deploy -c docker-compose.yml kaftarmq
+docker stack rm kaftarmq
 PS C:\Users\Amir\RiderProjects\KaftarMQ> docker build -t my-nginx-image:latest . 
 PS C:\Users\Amir\RiderProjects\KaftarMQ\Router> docker build -t kaftarmq/router:local .
 

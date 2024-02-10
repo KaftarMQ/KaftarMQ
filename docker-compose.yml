@@ -52,7 +52,10 @@ services:
       dockerfile: Dockerfile
     image: amirarab888/my-nginx-image:latest
     ports:
-      - "80:80"
+      - target: 80
+        published: 80
+        protocol: tcp
+        mode: ingress
     deploy:
       replicas: 1
       update_config:
@@ -72,8 +75,8 @@ services:
     volumes:
       - ./prometheus.yml:/etc/prometheus/prometheus.yml
       - ./rules.yml:/etc/prometheus/rules.yml  # Mount the rules file
-    ports:
-      - "9092:9090"
+#    ports:
+#      - "9092:9090"
     deploy:
       replicas: 1
       restart_policy:
@@ -91,7 +94,10 @@ services:
   grafana:
     image: grafana/grafana:latest
     ports:
-      - "13000:3000"
+      - target: 3000
+        published: 13000
+        protocol: tcp
+        mode: ingress
     volumes:
       - grafana_data:/var/lib/grafana
       - ./grafana/provisioning/dashboards:/etc/grafana/provisioning/dashboards 
@@ -119,8 +125,8 @@ services:
   
   node_exporter:
     image: prom/node-exporter:latest
-    ports:
-      - "9100:9100"
+#    ports:
+#      - "9100:9100"
     networks:
       - net
     deploy:
