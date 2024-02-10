@@ -2,6 +2,9 @@ version: '3.8'
 
 services:
   broker:
+    build:
+      context: ./Broker
+      dockerfile: Dockerfile
     image: kaftarmq/broker:local
     deploy:
       replicas: 2
@@ -14,6 +17,9 @@ services:
       - net
 
   router:
+    build:
+      context: ./Router
+      dockerfile: Dockerfile
     image: kaftarmq/router:local
     deploy:
       replicas: 2
@@ -26,6 +32,9 @@ services:
       - net
 
   syncer:
+    build:
+      context: ./Syncer
+      dockerfile: Dockerfile
     image: kaftarmq/syncer:local
     deploy:
       replicas: 1
@@ -38,6 +47,9 @@ services:
       - net
 
   nginx:
+    build:
+      context: .
+      dockerfile: Dockerfile
     image: my-nginx-image:latest
     ports:
       - "80:80"
