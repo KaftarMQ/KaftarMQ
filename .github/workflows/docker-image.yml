@@ -25,13 +25,14 @@ jobs:
           docker-compose -f docker-compose.yml push
 
       - name: Copy configuration files to the server
+        continue-on-error: true  # This allows the workflow to continue if this step fails
         uses: appleboy/scp-action@master
         with:
           host: ${{ secrets.SWARM_MANAGER_IP }}
           username: ${{ secrets.SWARM_MANAGER_USERNAME }}
           password: ${{ secrets.SWARM_MANAGER_PASSWORD }}
-          source: "grafana/,prometheus.yml,rules.yml"  # Specify the files and directories to copy
-          target: "/home/kaftarmq/configs"  # Destination path on the server
+          source: "grafana/,prometheus.yml,rules.yml"
+          target: "/home/kaftarmq/configs"
 
       - name: Deploy to Docker Swarm
         if: github.event_name == 'push' && github.ref == 'refs/heads/master'
@@ -41,6 +42,5 @@ jobs:
           username: ${{ secrets.SWARM_MANAGER_USERNAME }}
           password: ${{ secrets.SWARM_MANAGER_PASSWORD }}
           script: |
-            # Navigate to the config directory and deploy the stack
             cd /home/kaftarmq
             docker stack deploy --compose-file docker-compose.yml kaftarmq --with-registry-auth
