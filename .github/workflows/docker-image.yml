@@ -24,13 +24,23 @@ jobs:
           docker-compose -f docker-compose.yml build
           docker-compose -f docker-compose.yml push
 
-#      - name: Deploy to Docker Swarm
-#        if: github.event_name == 'push' && github.ref == 'refs/heads/master'
-#        uses: appleboy/ssh-action@master
-#        with:
-#          host: ${{ secrets.SWARM_MANAGER_IP }}
-#          username: ${{ secrets.SWARM_MANAGER_USERNAME }}
-#          key: ${{ secrets.SWARM_MANAGER_SSH_KEY }}
-#          script: |
-#            export DOCKER_HOST=tcp://${{ secrets.SWARM_MANAGER_IP }}:2375
-#            docker stack deploy --compose-file docker-compose.yml myapp
+      - name: Copy configuration files to the server
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.SWARM_MANAGER_IP }}
+          username: ${{ secrets.SWARM_MANAGER_USERNAME }}
+          password: ${{ secrets.SWARM_MANAGER_PASSWORD }}
+          source: "grafana/,prometheus.yml,rules.yml"  # Specify the files and directories to copy
+          target: "/home/kaftarmq/configs"  # Destination path on the server
+
+      - name: Deploy to Docker Swarm
+        if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SWARM_MANAGER_IP }}
+          username: ${{ secrets.SWARM_MANAGER_USERNAME }}
+          password: ${{ secrets.SWARM_MANAGER_PASSWORD }}
+          script: |
+            # Navigate to the config directory and deploy the stack
+            cd /home/kaftarmq
+            docker stack deploy --compose-file docker-compose.yml kaftarmq --with-registry-auth
