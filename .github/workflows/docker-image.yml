@@ -42,5 +42,5 @@ jobs:
           username: ${{ secrets.SWARM_MANAGER_USERNAME }}
           password: ${{ secrets.SWARM_MANAGER_PASSWORD }}
           script: |
-            cd /home/kaftarmq
+            cd /home/kaftarmq/configs
             docker stack deploy --compose-file docker-compose.yml kaftarmq --with-registry-auth
