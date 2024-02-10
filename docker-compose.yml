@@ -5,7 +5,7 @@ services:
     build:
       context: ./Broker
       dockerfile: Dockerfile
-    image: kaftarmq/broker:local
+    image: amirarab888/broker:latest
     deploy:
       replicas: 2
       update_config:
@@ -20,7 +20,7 @@ services:
     build:
       context: ./Router
       dockerfile: Dockerfile
-    image: kaftarmq/router:local
+    image: amirarab888/router:latest
     deploy:
       replicas: 2
       update_config:
@@ -35,7 +35,7 @@ services:
     build:
       context: ./Syncer
       dockerfile: Dockerfile
-    image: kaftarmq/syncer:local
+    image: amirarab888/syncer:latest
     deploy:
       replicas: 1
       update_config:
@@ -50,7 +50,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    image: my-nginx-image:latest
+    image: amirarab888/my-nginx-image:latest
     ports:
       - "80:80"
     deploy:
