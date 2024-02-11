@@ -12,6 +12,6 @@ public class ClientNotifier
             .WithArgument("key", message.Id)
             .WithArgument("value", message.Value);
         
-        Console.WriteLine("Client Notified");
+        Console.WriteLine("ClientLibrary Notified");
     }
 }

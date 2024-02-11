@@ -23,7 +23,7 @@ public class SubscribeHandler
             while (true)
             {
                 HandleSubscribe();
-                Console.WriteLine("subscribed");
+                //Console.WriteLine("subscribed");
                 await Task.Delay(1000);   
             }
         });
