@@ -4,6 +4,9 @@ using RoutingAlgorithm;
 using Syncer;
 using Syncer.RoutingAlgorithm;
 
+await Task.Delay(TimeSpan.FromSeconds(60)); // todo if needed
+
+
 var routingTableStorage = new RoutingTableStorage();
 var allBrokers = ENVIRONMENT.ALL_BROKERS.Select(u => new BrokerData(u, false)).ToList();
 routingTableStorage.UpdateBrokers(allBrokers);
@@ -45,7 +48,6 @@ if (app.Environment.IsDevelopment())
 app.MapControllers();
 app.UseHttpsRedirection();
 
-//await Task.Delay(TimeSpan.FromSeconds(20)); // todo if needed
 
 var routerNotifier = new RouterNotifier(routingTableStorage);
 await routerNotifier.NotifyRoutersTheBrokers();
@@ -57,9 +59,9 @@ var healthCheckMethod = async (CancellationToken ct) =>
 {
     while (true)
     {
+        await Task.Delay(TimeSpan.FromSeconds(10));
         ct.ThrowIfCancellationRequested();
         await brokerHealthChecker.CheckHealthOfBrokers();
-        await Task.Delay(TimeSpan.FromSeconds(10));
     }
 };
 
@@ -70,8 +72,8 @@ Task.Run(async () =>
 {
     while (true)
     {
+        await Task.Delay(TimeSpan.FromSeconds(10));
         await brokersScaleChecker.Check();
-        await Task.Delay(TimeSpan.FromSeconds(10000));
     }
 });
 

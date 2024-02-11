@@ -5,8 +5,8 @@ namespace ClientLibrary;
 
 public static class API
 {
-    public static string NGINX = "http://localhost:5274";
-    
+    public static string NGINX = "http://localhost/router";
+
     public static void Push(string key, byte[] value)
     {
         var decodedValue = Encoding.UTF8.GetString(value);
@@ -45,7 +45,7 @@ public static class API
                     var m = message.Value;
                     f(m);
                 }
-                Thread.Sleep(100);
+                // Thread.Sleep(100);
             }
         });
     }

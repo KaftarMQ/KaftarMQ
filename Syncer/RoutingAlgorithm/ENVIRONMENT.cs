@@ -5,7 +5,7 @@ namespace Syncer.RoutingAlgorithm;
 public static class ENVIRONMENT
 {
     private static string Router = "http://router";
-    private static string Broker = "http://nginx/broker";
+    private static string Broker = "http://broker";
 
     public static List<string> ALL_BROKERS => GetAllReplications(Broker);
     public static List<string> ALL_ROUTERS => GetAllReplications(Router);

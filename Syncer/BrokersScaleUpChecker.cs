@@ -28,6 +28,7 @@ public class BrokersScaleUpChecker
 
     public async Task Check()
     {
+        Console.WriteLine("check started");
         var newBrokers = GetNewBrokers();
         var newBrokersCount = newBrokers.Count;
         if (_brokers.Count >= newBrokersCount)
@@ -35,6 +36,8 @@ public class BrokersScaleUpChecker
             return;
         }
         
+        Console.WriteLine("scale up started");
+
         await CancelHealthCheck();
         
         await Task.Delay(20000);

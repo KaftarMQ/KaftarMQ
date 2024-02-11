@@ -23,8 +23,12 @@ public class PullHandler
         var n = _routingTableStorage.Brokers.Count;
         var i = new Random().Next(n);
 
+        Console.WriteLine($"pull started");
+
         for (var j = I_R_N(i+1, n); j < i+1; j = I_R_N(j+1, n))
         {
+            Console.WriteLine($"pull j:{j}, i+1:{i+1}");
+
             var masterBroker = _routingTableStorage.Brokers[j];
             if(masterBroker.IsFailed) continue;
             
@@ -56,6 +60,8 @@ public class PullHandler
                 Console.WriteLine($"Failed pulling from {masterBroker.Url}: \n{ex}");
             }
         }
+        
+        Console.WriteLine($"pull finished");
 
         return null;
     }

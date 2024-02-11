@@ -1,19 +1,21 @@
 ﻿using System.Text;
 using ClientLibrary;
 
-API.Push("Khalafi Eshgh 1", Encoding.UTF8.GetBytes("Message 1"));
-API.Push("Khalafi Eshgh 1", Encoding.UTF8.GetBytes("Message 2"));
-API.Push("Khalafi Eshgh 2", Encoding.UTF8.GetBytes("Message 1"));
-API.Push("Khalafi Eshgh 2", Encoding.UTF8.GetBytes("Message 2"));
 
-Action<(string key, byte[] value)> f = message =>
+void f(string key, string value, int consumerId)
 {
-    var value = Encoding.UTF8.GetString(message.value);
-    Console.WriteLine($"Received message with key: \"{message.key}\", value: \"{value}\"");
-};
+    Console.WriteLine($"{consumerId}: {key} {value}");
+}
 
-f(API.Pull());
+var consumerIds = Enumerable.Range(0, 1);
 
-API.Subscribe(f);
+var tasks = consumerIds.Select(async consumerId => await Task.Run(() =>
+{
+    API.Subscribe((message =>
+    {
+        f(message.key, Encoding.UTF8.GetString(message.value), consumerId);
+    }));
+    
+})).ToList();
 
-Thread.Sleep(TimeSpan.FromMinutes(5));
+await Task.Delay(100000);

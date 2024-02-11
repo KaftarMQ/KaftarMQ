@@ -5,9 +5,9 @@ services:
     build:
       context: ./Broker
       dockerfile: Dockerfile
-    image: amirarab888/broker:15
+    image: amirarab888/broker:17
     deploy:
-      replicas: 2
+      replicas: 10
       update_config:
         parallelism: 2
         delay: 10s
@@ -22,9 +22,9 @@ services:
     build:
       context: ./Router
       dockerfile: Dockerfile
-    image: amirarab888/router:15
+    image: amirarab888/router:18
     deploy:
-      replicas: 2
+      replicas: 5
       update_config:
         parallelism: 2
         delay: 10s
@@ -40,7 +40,7 @@ services:
     build:
       context: ./Syncer
       dockerfile: Dockerfile
-    image: amirarab888/syncer:15
+    image: amirarab888/syncer:26
     deploy:
       replicas: 1
       update_config:
@@ -48,6 +48,9 @@ services:
         delay: 10s
       restart_policy:
         condition: on-failure
+    depends_on:
+      - broker
+      - router
     networks:
       - net
     env_file:
