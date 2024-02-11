@@ -31,6 +31,7 @@ builder.Services.AddSingleton(routingTableStorage);
 builder.Services.AddSingleton(subscribeHandler);
 builder.Services.AddSingleton(pullHandler);
 builder.Services.AddSingleton(clientNotifier);
+builder.Services.AddHealthChecks();
 
 builder.Services.AddSingleton<IMetrics>(metrics);
 
@@ -41,6 +42,7 @@ var app = builder.Build();
 app.UseMetricsAllMiddleware();
 app.UseMetricsAllEndpoints();
 
+app.MapHealthChecks("/health");
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();

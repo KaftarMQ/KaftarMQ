@@ -34,7 +34,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-const string CLIENT_ADDRESS = "http://localhost:5000";
+var CLIENT_ADDRESS = args.Length > 0 ? args[0] : "http://localhost:5000";
 
 await new FluentClient(ENVIRONMENT.NGINX)
     .PostAsync("message/subscribe")
