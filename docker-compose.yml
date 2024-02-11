@@ -5,7 +5,7 @@ services:
     build:
       context: ./Broker
       dockerfile: Dockerfile
-    image: amirarab888/broker:latest
+    image: amirarab888/broker:15
     deploy:
       replicas: 2
       update_config:
@@ -15,12 +15,14 @@ services:
         condition: on-failure
     networks:
       - net
+    env_file:
+      - .env
 
   router:
     build:
       context: ./Router
       dockerfile: Dockerfile
-    image: amirarab888/router:14
+    image: amirarab888/router:15
     deploy:
       replicas: 2
       update_config:
@@ -30,12 +32,15 @@ services:
         condition: on-failure
     networks:
       - net
+    env_file:
+      - .env
+        
 
   syncer:
     build:
       context: ./Syncer
       dockerfile: Dockerfile
-    image: amirarab888/syncer:latest
+    image: amirarab888/syncer:15
     deploy:
       replicas: 1
       update_config:
@@ -45,6 +50,9 @@ services:
         condition: on-failure
     networks:
       - net
+    env_file:
+      - .env
+        
 
   nginx:
     build:

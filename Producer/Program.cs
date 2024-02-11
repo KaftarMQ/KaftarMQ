@@ -1,4 +1,6 @@
-﻿namespace Producer;
+﻿using Pathoschild.Http.Client;
+
+namespace Producer;
 
 public class Program
 {

@@ -60,6 +60,7 @@ public class MessageController : ControllerBase
     [HttpPost("updateBrokers")]
     public ActionResult UpdateBrokers([FromBody] string[] brokers)
     {
+        Console.WriteLine($"New brokers are received: {string.Join(", ", brokers)}");
         _routingTableStorage.UpdateBrokers(brokers.Select(u => new BrokerData(u, false)).ToList());
         return Ok();
     }    
@@ -68,70 +69,8 @@ public class MessageController : ControllerBase
     [HttpPost("UpdateBrokerFailure")]
     public IActionResult UpdateBrokerFailure(string brokerUrl)
     {
+        Console.WriteLine($"Broker Failure: {brokerUrl}");
         _routingTableStorage.UpdateBrokerFailure(brokerUrl);
         return Ok();
-    }
-    
-    
-    
-    
-    [HttpGet("api")]
-    public ActionResult<string> Api()
-    {
-        printAddress("kaftarmq_broker");
-        printAddress("broker");
-        printAddress("tasks.broker");
-        printAddress("tasks.kaftarmq_broker");
-        printAddress("http://broker");
-
-        Console.WriteLine("say hello33");
-
-        var lookup = new LookupClient();
-
-        var result = lookup.QueryAsync("kaftarmq_broker", QueryType.NS).GetAwaiter().GetResult();
-        Console.WriteLine("say hello2");
-        
-        foreach(var nsRecord in result.Answers.NsRecords())
-        {
-            Console.WriteLine(nsRecord.NSDName);
-        }
-        
-        result = lookup.QueryAsync("broker", QueryType.NS).GetAwaiter().GetResult();
-        Console.WriteLine("say hello2");
-        
-        foreach(var nsRecord in result.Answers.NsRecords())
-        {
-            Console.WriteLine(nsRecord.NSDName);
-        }
-
-
-        var aa = result.Answers.NsRecords()
-            .Select(x => x.ToString()).ToList().Concat(Enumerable.Repeat("hello", 1));
-        return Ok(string.Join(' ', aa));
-    }
-
-    private static void printAddress(string url)
-    {
-        try
-        {
-            Console.WriteLine(url);
-            var uri = new Uri(url);
-            var addresses = Dns.GetHostAddresses(uri.Host);
-            foreach (var address in addresses)
-            {
-                Console.WriteLine(address.ToString());
-            }
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e);
-        }
-    }
-
-    [HttpGet("hi2")]
-    public ActionResult<string> hi2()
-    {
-        Console.WriteLine("say hello");
-        return "hello abol";
     }
 }

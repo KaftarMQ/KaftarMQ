@@ -12,11 +12,18 @@ public static class ENVIRONMENT
         var res = new HashSet<string>();
         try
         {
-            var address = Resolve(alias);
-            while (!res.Contains(address))
+            var confidenceRange = 5;
+            while (confidenceRange > 0)
             {
-                res.Add(address);
-                address = Resolve(alias);
+                var address = Resolve(alias);
+                if (res.Contains(address))
+                {
+                    confidenceRange--;
+                }
+                else
+                {
+                    res.Add(address);
+                }
             }
         }
         catch (Exception e)
@@ -31,6 +38,7 @@ public static class ENVIRONMENT
     private static string Resolve(string alias)
     {
         var uri = new Uri(alias);
-        return Dns.GetHostAddresses(uri.Host)[0].ToString();
+        var ip = Dns.GetHostAddresses(uri.Host)[0].ToString();
+        return $"http://{ip}";
     }
 }
