@@ -47,16 +47,33 @@ app.UseHttpsRedirection();
 
 //await Task.Delay(TimeSpan.FromSeconds(20)); // todo if needed
 
-await new RouterNotifier(routingTableStorage).NotifyRoutersTheBrokers();
+var routerNotifier = new RouterNotifier(routingTableStorage);
+await routerNotifier.NotifyRoutersTheBrokers();
 
 var brokerHealthChecker = new BrokerHealthChecker(routingTableStorage);
+var ctSource = new CancellationTokenSource();
+
+var healthCheckMethod = async (CancellationToken ct) =>
+{
+    while (true)
+    {
+        ct.ThrowIfCancellationRequested();
+        await brokerHealthChecker.CheckHealthOfBrokers();
+        await Task.Delay(TimeSpan.FromSeconds(10));
+    }
+};
+
+var healthCheckTask = Task.Run(async () => await healthCheckMethod(ctSource.Token));
+
+var brokersScaleChecker = new BrokersScaleUpChecker(routerNotifier, routingTableStorage, ctSource, healthCheckMethod, healthCheckTask);
 Task.Run(async () =>
 {
     while (true)
     {
-        await brokerHealthChecker.CheckHealthOfBrokers();
-        await Task.Delay(TimeSpan.FromSeconds(10));
+        await brokersScaleChecker.Check();
+        await Task.Delay(TimeSpan.FromSeconds(10000));
     }
 });
+
 
 app.Run();

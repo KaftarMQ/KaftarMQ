@@ -10,10 +10,10 @@ public class RoutingTableStorage
 
     public void UpdateBrokers(List<BrokerData> brokers)
     {
-        if (_brokersInitialized)
-        {
-            throw new Exception("Brokers are already initialized");
-        }
+        // if (_brokersInitialized)
+        // {
+        //     throw new Exception("Brokers are already initialized");
+        // }
 
         brokers.Sort(BrokerData.UrlComparer);
         Brokers = brokers;
