@@ -4,8 +4,8 @@ namespace Syncer.RoutingAlgorithm;
 
 public static class ENVIRONMENT
 {
-    private static string Router = "http://localhost:5274/router";
-    private static string Broker = "http://localhost:5274/broker";
+    private static string Router = "http://router";
+    private static string Broker = "http://nginx/broker";
 
     public static List<string> ALL_BROKERS => GetAllReplications(Broker);
     public static List<string> ALL_ROUTERS => GetAllReplications(Router);
@@ -41,10 +41,10 @@ public static class ENVIRONMENT
     private static string Resolve(string alias)
     {
         var response = new FluentClient(alias)
-            .PostAsync("Message/ip")
+            .GetAsync("Message/ip")
             .As<string>()
             .GetAwaiter().GetResult();
 
-        return response;
+        return $"http://{response}";
     }
 }
