@@ -1,6 +1,7 @@
 using App.Metrics;
 using App.Metrics.Counter;
 using Broker;
+using DnsClient;
 using Microsoft.AspNetCore.Mvc;
 using Router.Business;
 using RoutingAlgorithm;
@@ -68,5 +69,33 @@ public class MessageController : ControllerBase
     {
         _routingTableStorage.UpdateBrokerFailure(brokerUrl);
         return Ok();
+    }
+    
+    
+    [HttpGet("api")]
+    public ActionResult<string> Api()
+    {
+        Console.WriteLine("say hello");
+
+        var lookup = new LookupClient();
+
+        var result = lookup.QueryAsync("tasks.broker", QueryType.NS).GetAwaiter().GetResult();
+        Console.WriteLine("say hello");
+        
+        foreach(var nsRecord in result.Answers.NsRecords())
+        {
+            Console.WriteLine(nsRecord.NSDName);
+        }
+
+        var aa = result.Answers.NsRecords()
+            .Select(x => x.ToString()).ToList().Concat(Enumerable.Repeat("hello", 1));
+        return Ok(string.Join(' ', aa));
+    }
+    
+    [HttpGet("hi")]
+    public ActionResult<string> hi()
+    {
+        Console.WriteLine("say hello");
+        return "hello abol";
     }
 }

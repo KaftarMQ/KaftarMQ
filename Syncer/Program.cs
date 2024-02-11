@@ -1,8 +1,5 @@
 using App.Metrics;
 using App.Metrics.Formatters.Prometheus;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using RoutingAlgorithm;
 using Syncer;
 
@@ -48,6 +45,7 @@ app.MapControllers();
 app.UseHttpsRedirection();
 
 //await Task.Delay(TimeSpan.FromSeconds(20)); // todo if needed
+
 await new RouterNotifier(routingTableStorage).NotifyRoutersTheBrokers();
 
 var brokerHealthChecker = new BrokerHealthChecker(routingTableStorage);
