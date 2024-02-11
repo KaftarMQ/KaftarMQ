@@ -6,14 +6,12 @@ namespace Syncer;
 
 public class BrokersScaleUpChecker
 {
-    public static string NGINX = "http://localhost:5274";
-
     private readonly RouterNotifier _routerNotifier;
     private readonly RoutingTableStorage _routingTableStorage;
     private CancellationTokenSource _cancellationTokenSource;
     private readonly Func<CancellationToken, Task> _healthCheckMethod;
     private Task _healthCheckTask;
-    private List<string> _brokers = new List<string>();
+    private List<string> _brokers = new();
 
     public BrokersScaleUpChecker(RouterNotifier routerNotifier,
         RoutingTableStorage routingTableStorage,
@@ -59,10 +57,12 @@ public class BrokersScaleUpChecker
             await Push(message);
         }
     }
-    
+
+    private const string RandomRouter = "http://router";
+
     private async Task Push(Message message)
     {
-        await new FluentClient(NGINX)
+        await new FluentClient(RandomRouter)
             .PostAsync("Message/push")
             .WithArgument("key", message.Key)
             .WithArgument("value", message.Value);
@@ -106,7 +106,7 @@ public class BrokersScaleUpChecker
     
     private static async Task<Message?> InternalPull()
     {
-        var message = await new FluentClient(NGINX)
+        var message = await new FluentClient(RandomRouter)
             .GetAsync("Message/pull")
             .As<Message?>();
         
@@ -124,7 +124,7 @@ public class BrokersScaleUpChecker
 
 public class MessagesStorage
 {
-    private readonly Queue<Message> _messages = new Queue<Message>();
+    private readonly Queue<Message> _messages = new();
     public void Enqueue(Message message)
     {
         _messages.Enqueue(message);
