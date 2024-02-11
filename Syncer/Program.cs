@@ -2,6 +2,7 @@ using App.Metrics;
 using App.Metrics.Formatters.Prometheus;
 using RoutingAlgorithm;
 using Syncer;
+using Syncer.RoutingAlgorithm;
 
 var routingTableStorage = new RoutingTableStorage();
 var allBrokers = ENVIRONMENT.ALL_BROKERS.Select(u => new BrokerData(u, false)).ToList();
