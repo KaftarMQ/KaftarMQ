@@ -1,4 +1,4 @@
-version: '3.8'
+version: '3.9'
 
 services:
   broker:
@@ -20,7 +20,7 @@ services:
     build:
       context: ./Router
       dockerfile: Dockerfile
-    image: amirarab888/router:latest
+    image: amirarab888/router:14
     deploy:
       replicas: 2
       update_config:

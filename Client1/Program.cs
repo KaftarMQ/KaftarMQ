@@ -1,10 +1,10 @@
 ﻿using System.Text;
 using ClientLibrary;
 
-API.Push("Khalafi Eshgh 1", "Message 1"u8.ToArray());
-API.Push("Khalafi Eshgh 1", "Message 2"u8.ToArray());
-API.Push("Khalafi Eshgh 2", "Message 1"u8.ToArray());
-API.Push("Khalafi Eshgh 2", "Message 2"u8.ToArray());
+API.Push("Khalafi Eshgh 1", Encoding.UTF8.GetBytes("Message 1"));
+API.Push("Khalafi Eshgh 1", Encoding.UTF8.GetBytes("Message 2"));
+API.Push("Khalafi Eshgh 2", Encoding.UTF8.GetBytes("Message 1"));
+API.Push("Khalafi Eshgh 2", Encoding.UTF8.GetBytes("Message 2"));
 
 Action<(string key, byte[] value)> f = message =>
 {

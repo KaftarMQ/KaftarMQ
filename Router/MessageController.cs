@@ -1,3 +1,4 @@
+using System.Net;
 using App.Metrics;
 using App.Metrics.Counter;
 using Broker;
@@ -72,28 +73,63 @@ public class MessageController : ControllerBase
     }
     
     
+    
+    
     [HttpGet("api")]
     public ActionResult<string> Api()
     {
-        Console.WriteLine("say hello");
+        printAddress("kaftarmq_broker");
+        printAddress("broker");
+        printAddress("tasks.broker");
+        printAddress("tasks.kaftarmq_broker");
+        printAddress("http://broker");
+
+        Console.WriteLine("say hello33");
 
         var lookup = new LookupClient();
 
-        var result = lookup.QueryAsync("tasks.broker", QueryType.NS).GetAwaiter().GetResult();
-        Console.WriteLine("say hello");
+        var result = lookup.QueryAsync("kaftarmq_broker", QueryType.NS).GetAwaiter().GetResult();
+        Console.WriteLine("say hello2");
+        
+        foreach(var nsRecord in result.Answers.NsRecords())
+        {
+            Console.WriteLine(nsRecord.NSDName);
+        }
+        
+        result = lookup.QueryAsync("broker", QueryType.NS).GetAwaiter().GetResult();
+        Console.WriteLine("say hello2");
         
         foreach(var nsRecord in result.Answers.NsRecords())
         {
             Console.WriteLine(nsRecord.NSDName);
         }
 
+
         var aa = result.Answers.NsRecords()
             .Select(x => x.ToString()).ToList().Concat(Enumerable.Repeat("hello", 1));
         return Ok(string.Join(' ', aa));
     }
-    
-    [HttpGet("hi")]
-    public ActionResult<string> hi()
+
+    private static void printAddress(string url)
+    {
+        try
+        {
+            Console.WriteLine(url);
+            var uri = new Uri(url);
+            var addresses = Dns.GetHostAddresses(uri.Host);
+            foreach (var address in addresses)
+            {
+                Console.WriteLine(address.ToString());
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+        }
+    }
+
+    [HttpGet("hi2")]
+    public ActionResult<string> hi2()
     {
         Console.WriteLine("say hello");
         return "hello abol";
