@@ -64,7 +64,7 @@ public class RoutingTableStorage
     private int GetMasterIndex(string key)
     {
         var mod = Brokers.Count;
-        var hash = key.GetHashCode() % mod;
+        var hash = Math.Abs(key.GetHashCode()) % mod;
 
         var brokerData = Brokers[hash];
         while (brokerData.IsFailed)

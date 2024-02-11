@@ -6,7 +6,6 @@ using RoutingAlgorithm;
 var clientNotifier = new ClientNotifier();
 var routingTableStorage = new RoutingTableStorage();
 var pullHandler = new PullHandler(routingTableStorage);
-var subscribeHandler = new SubscribeHandler(pullHandler, clientNotifier);
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,7 +27,6 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddSingleton<MessagePublisher>();
 builder.Services.AddSingleton(routingTableStorage);
-builder.Services.AddSingleton(subscribeHandler);
 builder.Services.AddSingleton(pullHandler);
 builder.Services.AddSingleton(clientNotifier);
 builder.Services.AddHealthChecks();

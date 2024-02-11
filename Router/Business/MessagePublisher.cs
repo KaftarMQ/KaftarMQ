@@ -7,15 +7,12 @@ namespace Router.Business;
 public class MessagePublisher
 {
     private readonly RoutingTableStorage _routingTableStorage;
-    private readonly SubscribeHandler _subscribeHandler;
     private readonly PullHandler _pullHandler;
 
     public MessagePublisher(RoutingTableStorage routingTableStorage, 
-        SubscribeHandler subscribeHandler,
         PullHandler pullHandler)
     {
         _routingTableStorage = routingTableStorage ?? throw new ArgumentNullException(nameof(routingTableStorage));
-        _subscribeHandler = subscribeHandler ?? throw new ArgumentNullException(nameof(subscribeHandler));
         _pullHandler = pullHandler ?? throw new ArgumentNullException(nameof(pullHandler));
     }
 
@@ -44,10 +41,5 @@ public class MessagePublisher
     public async Task<Message?> Pull()
     {
         return await _pullHandler.Pull();
-    }
-
-    public async Task Subscribe(string clientAddress)
-    {
-        _subscribeHandler.AddSubscriber(clientAddress);
     }
 }

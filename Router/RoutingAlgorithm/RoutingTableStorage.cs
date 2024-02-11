@@ -10,10 +10,10 @@ public class RoutingTableStorage
 
     public void UpdateBrokers(List<BrokerData> brokers)
     {
-        if (_brokersInitialized)
-        {
-            throw new Exception("Brokers are already initialized");
-        }
+        // if (_brokersInitialized)
+        // {
+        //     throw new Exception("Brokers are already initialized");
+        // }
 
         brokers.Sort(BrokerData.UrlComparer);
         Brokers = brokers;
@@ -64,7 +64,7 @@ public class RoutingTableStorage
     private int GetMasterIndex(string key)
     {
         var mod = Brokers.Count;
-        var hash = key.GetHashCode() % mod;
+        var hash = Math.Abs(key.GetHashCode()) % mod;
 
         var brokerData = Brokers[hash];
         while (brokerData.IsFailed)

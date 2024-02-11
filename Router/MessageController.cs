@@ -48,14 +48,6 @@ public class MessageController : ControllerBase
         return _messagePublisher.Pull().GetAwaiter().GetResult();
     }
 
-    [HttpPost("subscribe")]
-    public IActionResult Subscribe(string clientAddress)
-    {
-        Console.WriteLine($"Subscribing message with clientAddress : {clientAddress}");
-        _messagePublisher.Subscribe(clientAddress).GetAwaiter().GetResult();
-        return Ok();
-    }
-    
     //syncer call this
     [HttpPost("updateBrokers")]
     public ActionResult UpdateBrokers([FromBody] string[] brokers)
