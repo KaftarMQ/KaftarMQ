@@ -1,11 +1,14 @@
-﻿using System.Net;
+﻿using Pathoschild.Http.Client;
 
 namespace Syncer.RoutingAlgorithm;
 
 public static class ENVIRONMENT
 {
-    public static List<string> ALL_BROKERS => GetAllReplications("http://broker");
-    public static List<string> ALL_ROUTERS => GetAllReplications("http://router");
+    private static string Router = "http://localhost:5274/router";
+    private static string Broker = "http://localhost:5274/broker";
+
+    public static List<string> ALL_BROKERS => GetAllReplications(Broker);
+    public static List<string> ALL_ROUTERS => GetAllReplications(Router);
 
     private static List<string> GetAllReplications(string alias)
     {
@@ -37,8 +40,11 @@ public static class ENVIRONMENT
 
     private static string Resolve(string alias)
     {
-        var uri = new Uri(alias);
-        var ip = Dns.GetHostAddresses(uri.Host)[0].ToString();
-        return $"http://{ip}";
+        var response = new FluentClient(alias)
+            .PostAsync("Message/ip")
+            .As<string>()
+            .GetAwaiter().GetResult();
+
+        return response;
     }
 }

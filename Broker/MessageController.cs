@@ -1,3 +1,4 @@
+using System.Net;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Broker;
@@ -44,5 +45,13 @@ public class MessageController : ControllerBase
     {
         _broker.MoveSlaveContentToMaster();
         return Ok();
+    }
+    
+    [HttpGet("ip")]
+    public string GetIPAddress()
+    {
+        IPHostEntry ipHostInfo = Dns.GetHostEntry(Dns.GetHostName());
+        IPAddress ipAddress = ipHostInfo.AddressList[0];
+        return ipAddress.ToString();
     }
 }

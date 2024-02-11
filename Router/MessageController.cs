@@ -73,4 +73,12 @@ public class MessageController : ControllerBase
         _routingTableStorage.UpdateBrokerFailure(brokerUrl);
         return Ok();
     }
+    
+    [HttpGet("ip")]
+    public string GetIPAddress()
+    {
+        IPHostEntry ipHostInfo = Dns.GetHostEntry(Dns.GetHostName());
+        IPAddress ipAddress = ipHostInfo.AddressList[0];
+        return ipAddress.ToString();
+    }
 }
