@@ -15,16 +15,13 @@
         <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.0" />
         <PackageReference Include="Pathoschild.Http.FluentClient" Version="4.3.0" />
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
+        <PackageReference Include="DnsClient" Version="1.7.0" />
     </ItemGroup>
 
     <ItemGroup>
       <Content Include="..\.dockerignore">
         <Link>.dockerignore</Link>
       </Content>
-    </ItemGroup>
-
-    <ItemGroup>
-      <ProjectReference Include="..\RoutingAlgorithm\RoutingAlgorithm.csproj" />
     </ItemGroup>
 
 </Project>
