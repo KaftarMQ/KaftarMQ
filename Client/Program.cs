@@ -9,5 +9,7 @@ API.Push("Khalafi Eshgh 2", "Message 2"u8.ToArray());
 API.Subscribe(message =>
 {
     var value = Encoding.UTF8.GetString(message.value);
-    Console.WriteLine($"Received message with key: {message.key}, value: {value}");
+    Console.WriteLine($"Received message with key: \"{message.key}\", value: \"{value}\"");
 });
+
+Thread.Sleep(TimeSpan.FromMinutes(5));

@@ -5,22 +5,24 @@ namespace Client;
 
 public static class API
 {
-    public static string NGINX = "http://localhost:5000";
+    public static string NGINX = "http://localhost:5274";
     
     public static void Push(string key, byte[] value)
     {
         var decodedValue = Encoding.UTF8.GetString(value);
-        Console.WriteLine($"Pushing message with key: {key}, value: {decodedValue}");
+        Console.WriteLine($"Pushing message with key: \"{key}\", value: \"{decodedValue}\"");
 
         new FluentClient(NGINX)
-            .PostAsync("router/Message/push")
+            .PostAsync("Message/push")
+            .WithArgument("key", key)
+            .WithArgument("value", decodedValue)
             .GetAwaiter().GetResult();
     }
 
     public static (string key, byte[] value) Pull()
     {
         var message = new FluentClient(NGINX)
-            .GetAsync("router/Message/pull")
+            .GetAsync("Message/pull")
             .As<Message>()
             .GetAwaiter().GetResult();
 
