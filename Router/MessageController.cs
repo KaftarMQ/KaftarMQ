@@ -40,7 +40,7 @@ public class MessageController : ControllerBase
     }
 
     [HttpGet("pull")]
-    public ActionResult<Message?> Pull()
+    public ActionResult<Message?> Pull() // todo make PULL blocking
     {
         Console.WriteLine($"Pulling message");
         return _messagePublisher.Pull().GetAwaiter().GetResult();
