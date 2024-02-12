@@ -32,7 +32,11 @@ public class PullHandler
             Console.WriteLine($"pull j:{j}");
 
             var masterBroker = _routingTableStorage.Brokers[j];
-            if(masterBroker.IsFailed) continue;
+            if (masterBroker.IsFailed)
+            {
+                j = I_R_N(j+1, n);
+                continue;
+            }
             
             var slaveBroker = _routingTableStorage.GetNextHealthyBroker(I_R_N(j+1, n));
 
@@ -54,7 +58,7 @@ public class PullHandler
                 {
                     Console.WriteLine($"Failed pulling from slave {slaveBroker.Url}: \n{ex}");
                 }
-                
+                Console.WriteLine($"message pull :: {message.Key}:{message.Value}");
                 return message;
             }
             catch (Exception ex)

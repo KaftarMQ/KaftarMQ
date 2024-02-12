@@ -53,10 +53,12 @@ public class BrokersScaleUpChecker
 
     private async Task PushAllMessages(MessagesStorage messagesStorage)
     {
+        Console.WriteLine("PushAllMessages started");
         while (true)
         {
             var message = messagesStorage.Dequeue();
             if (message is null) break;
+            Console.WriteLine($"PushAllMessages::{message.Key}:{message.Value}");
             await Push(message);
         }
     }
@@ -73,6 +75,7 @@ public class BrokersScaleUpChecker
 
     private async Task UpdateRouters(List<string> newBrokers)
     {
+        Console.WriteLine($"UpdateRouters:: newBrokers{string.Join(' ', newBrokers)}");
         _routingTableStorage.UpdateBrokers(
             newBrokers.Select(u => new BrokerData(u, false)).ToList());
         await _routerNotifier.NotifyRoutersTheBrokers();
@@ -99,21 +102,34 @@ public class BrokersScaleUpChecker
 
     private async Task PullAllMessages(MessagesStorage messagesStorage)
     {
+        Console.WriteLine("PullAllMessages started");
+
         while (true)
         {
-            var message = await InternalPull();
+            var message = InternalPull();
             if (message is null) break;
             messagesStorage.Enqueue(message);
+            Console.WriteLine($"PullAllMessages::{message.Key}:{message.Value}");
         }
     }
     
-    private static async Task<Message?> InternalPull()
+    private static Message? InternalPull()
     {
-        var message = await new FluentClient(RandomRouter)
-            .GetAsync("Message/pull")
-            .As<Message?>();
+        var cnt = 0;
+        while (cnt++ < 5)
+        {
+            Thread.Sleep(100);
+
+            var message = new FluentClient(RandomRouter)
+                .GetAsync("Message/pull")
+                .As<Message?>().GetAwaiter().GetResult();
+            
+            if(message == null) continue;
+            return message;   
+        }
         
-        return message;
+        Console.WriteLine("message is null in pull");
+        return null;
     }
 
 

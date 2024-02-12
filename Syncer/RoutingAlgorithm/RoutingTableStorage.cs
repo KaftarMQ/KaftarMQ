@@ -1,4 +1,7 @@
-﻿using Syncer;
+﻿using System.Runtime.Intrinsics.Arm;
+using System.Security.Cryptography;
+using System.Text;
+using Syncer;
 
 namespace RoutingAlgorithm;
 
@@ -64,7 +67,11 @@ public class RoutingTableStorage
     private int GetMasterIndex(string key)
     {
         var mod = Brokers.Count;
-        var hash = Math.Abs(key.GetHashCode()) % mod;
+        var hashByte = SHA256.Create().ComputeHash(Encoding.UTF8.GetBytes(key));
+        var hash = BitConverter.ToInt32(hashByte, 0);
+        hash = Math.Abs(hash);
+        hash %= mod;
+        Console.WriteLine($"GetMasterIndex :: key:{key}, hash:{hash}");
 
         var brokerData = Brokers[hash];
         while (brokerData.IsFailed)

@@ -33,6 +33,10 @@ public class Broker
         lock (_masterMessages)
         {
             var message = _masterMessages.FirstOrDefault();
+            if (message is null)
+            {
+                return null;
+            }
             _masterMessages.RemoveFirst();
             return message;
         }
@@ -52,6 +56,7 @@ public class Broker
 
     public void MoveSlaveContentToMaster()
     {
+        Console.WriteLine("i am master now hoho");
         lock (_masterMessages)
         {
             lock (_slaveMessages)

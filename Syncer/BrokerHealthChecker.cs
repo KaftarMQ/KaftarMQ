@@ -22,7 +22,9 @@ public class BrokerHealthChecker
         {
             if (await IsHealthy(broker)) continue;
             await _routerNotifier.NotifyRoutersFailedBroker(broker);
-            await _brokerNotifier.MoveSlaveContentToMaster(_routingTableStorage.GetMasterSlave(broker).Url);
+            var slave = _routingTableStorage.GetMasterSlave(broker).Url;
+            Console.WriteLine($"CheckHealthOfBrokers :: broker down : {broker} with slave : {slave}");
+            await _brokerNotifier.MoveSlaveContentToMaster(slave);
             _routingTableStorage.UpdateBrokerFailure(broker);
         }
     }

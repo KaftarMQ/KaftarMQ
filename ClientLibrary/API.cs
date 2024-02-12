@@ -45,7 +45,7 @@ public static class API
                     var m = message.Value;
                     f(m);
                 }
-                // Thread.Sleep(100);
+                Thread.Sleep(100);
             }
         });
     }
