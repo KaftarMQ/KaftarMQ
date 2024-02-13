@@ -31,7 +31,7 @@ jobs:
           host: ${{ secrets.SWARM_MANAGER_IP }}
           username: ${{ secrets.SWARM_MANAGER_USERNAME }}
           password: ${{ secrets.SWARM_MANAGER_PASSWORD }}
-          source: "grafana/,prometheus.yml,rules.yml,docker-compose.yml,nginx.conf"
+          source: "grafana/,prometheus.yml,rules.yml,docker-compose.yml,nginx.conf, .env"
           target: "/home/kaftarmq/configs"
 
       - name: Deploy to Docker Swarm
