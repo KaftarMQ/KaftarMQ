@@ -2,12 +2,13 @@ import requests, json
 import time
 from threading import Thread
 
+ip = 'localhost'
 
 class Api:
 
     @staticmethod
     def internal_pull():
-        message = requests.get("http://localhost/router/Message/pull")
+        message = requests.get(f"http://{ip}/router/Message/pull")
 
         if message is None or message.text == '':
             return None
@@ -32,6 +33,7 @@ class Api:
     def internal_subscribe(f):
         while True:
             message = Api.internal_pull()
+            print('mess', message)
             if message is not None:
                 f(message[0], message[1])
             time.sleep(0.1)
@@ -42,5 +44,5 @@ class Api:
         decodedValue = value.decode("utf-8")
         #print(f"Pushing message with key: \"{key}\", value: \"{decodedValue}\"")
 
-        response = requests.post("http://localhost/router/Message/push", params={"key": key, "value": decodedValue})
+        response = requests.post(f"http://{ip}/router/Message/push", params={"key": key, "value": decodedValue})
         response.raise_for_status()

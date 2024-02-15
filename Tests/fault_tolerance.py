@@ -15,7 +15,7 @@ import time
 from client import pull, push, subscribe
 
 time.sleep(1)
-TEST_SIZE = 1000 
+TEST_SIZE = 1000 * 1000
 KEY_SIZE = 8
 SUBSCRIER_COUNT = 4
 
