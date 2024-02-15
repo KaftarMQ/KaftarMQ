@@ -7,12 +7,19 @@ services:
       dockerfile: Dockerfile
     image: amirarab888/broker:28
     deploy:
-      replicas: 10
+      replicas: 5
       update_config:
         parallelism: 2
         delay: 10s
       restart_policy:
         condition: on-failure
+      resources:
+        limits:
+          cpus: '0.05'  # Limits the CPU usage to half a CPU core
+#          memory: 32M  # Limits the memory usage to 256MB
+        reservations:
+          cpus: '0.025'  # Reserves a quarter of a CPU core
+#          memory: 16M  # Reserves 128MB of memory
     networks:
       - net
     env_file:

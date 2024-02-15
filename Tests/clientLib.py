@@ -33,7 +33,7 @@ class Api:
     def internal_subscribe(f):
         while True:
             message = Api.internal_pull()
-            print('mess', message)
+#             print('mess', message)
             if message is not None:
                 f(message[0], message[1])
             time.sleep(0.1)

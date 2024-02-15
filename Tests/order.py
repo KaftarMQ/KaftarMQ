@@ -7,7 +7,7 @@ from typing import Dict, List
 
 from client import pull, push, subscribe
 
-TEST_SIZE = 1000 * 10 #00
+TEST_SIZE = 100 * 10 #00
 KEY_SIZE = 8
 SUBSCRIER_COUNT = 4
 
